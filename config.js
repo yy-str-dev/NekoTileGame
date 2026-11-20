@@ -4,7 +4,7 @@ GameConfig = {
     
     // 盤面設定
     GRID_COUNT: 8,
-    CELL_SIZE: 38,
+    CELL_SIZE: 35,
     CELL_GAP: 3,
     BOARD_PADDING: 10,
 
