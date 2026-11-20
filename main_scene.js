@@ -20,6 +20,9 @@ phina.define('MainScene', {
 
         // 3. 下部3スロット台座を描画
         this.createSlots();
+
+        // 4. 猫ピースの手札管理 (PieceStock) を生成し、3枠に猫を補充
+        this.pieceStock = PieceStock().addChildTo(this);
     },
 
     // ヘッダーUIの作成
@@ -98,7 +101,7 @@ phina.define('MainScene', {
             }).addChildTo(this.slotsGroup)
                 .setPosition(posX, slotY);
 
-            // スロット枠内に薄いガイドマーク（足跡アイコン風など）
+            // スロット枠内に薄いガイドマーク
             Label({
                 text: '🐾',
                 fontSize: 18,
