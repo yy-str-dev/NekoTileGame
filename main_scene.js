@@ -14,10 +14,11 @@ phina.define('MainScene', {
         // スコア管理
         this.scoreManager = ScoreManager().addChildTo(this);
 
-        // ドラッグ状態管理
+        // ゲーム状態管理
         this.draggingPiece = null;
         this.currentDropCells = null;
         this.isClearing = false;
+        this.isGameOver = false;
 
         // 1. ヘッダーUI（タイトル・スコア）を描画
         this.createHeader();
@@ -38,11 +39,20 @@ phina.define('MainScene', {
         // 6. ポップアップテキスト等UIエフェクトレイヤー
         this.uiEffectLayer = DisplayElement().addChildTo(this);
 
+        // 7. ゲームオーバーモーダル用最前面レイヤー
+        this.modalLayer = DisplayElement().addChildTo(this);
+
         // 初期スコア表示を同期
         this.updateScoreDisplay();
 
         // シーン全体のポインタイベント設定（ドラッグ＆ドロップ）
         this.setupDragEvents();
+
+        // 初期の詰みチェック＆配置可能状態を反映
+        var self = this;
+        this.board.one('enterframe', function () {
+            self.checkGameOver();
+        });
     },
 
     // ヘッダーUIの作成
@@ -67,7 +77,7 @@ phina.define('MainScene', {
             fontWeight: 'bold',
             fill: GameConfig.COLORS.TEXT_SUB,
         }).addChildTo(headerGroup)
-            .setPosition(300, 20);
+            .setPosition(280, 20);
 
         this.scoreLabel = Label({
             text: '0',
@@ -75,7 +85,7 @@ phina.define('MainScene', {
             fontWeight: 'bold',
             fill: GameConfig.COLORS.TEXT_SCORE,
         }).addChildTo(headerGroup)
-            .setPosition(300, 38);
+            .setPosition(280, 38);
 
         // ハイスコア表示
         this.bestTitle = Label({
@@ -84,7 +94,7 @@ phina.define('MainScene', {
             fontWeight: 'bold',
             fill: GameConfig.COLORS.TEXT_SUB,
         }).addChildTo(headerGroup)
-            .setPosition(400, 20);
+            .setPosition(370, 20);
 
         this.bestLabel = Label({
             text: '0',
@@ -92,7 +102,90 @@ phina.define('MainScene', {
             fontWeight: 'bold',
             fill: GameConfig.COLORS.TEXT_MAIN,
         }).addChildTo(headerGroup)
-            .setPosition(400, 38);
+            .setPosition(370, 38);
+
+        // デバッグ用: 成仏テストボタン
+        var testBtn = RectangleShape({
+            width: 38,
+            height: 22,
+            fill: '#ffd166',
+            stroke: '#e67700',
+            strokeWidth: 1,
+            cornerRadius: 4,
+        }).addChildTo(headerGroup)
+            .setPosition(432, 28);
+
+        Label({
+            text: '消去',
+            fontSize: 10,
+            fontWeight: 'bold',
+            fill: '#5c4838',
+        }).addChildTo(testBtn);
+
+        testBtn.setInteractive(true);
+        var self = this;
+        testBtn.on('pointstart', function () {
+            self.debugFillAndClearRow();
+        });
+
+        // デバッグ用: 詰みテストボタン
+        var overBtn = RectangleShape({
+            width: 38,
+            height: 22,
+            fill: '#ff8787',
+            stroke: '#e03131',
+            strokeWidth: 1,
+            cornerRadius: 4,
+        }).addChildTo(headerGroup)
+            .setPosition(476, 28);
+
+        Label({
+            text: '詰み',
+            fontSize: 10,
+            fontWeight: 'bold',
+            fill: '#ffffff',
+        }).addChildTo(overBtn);
+
+        overBtn.setInteractive(true);
+        overBtn.on('pointstart', function () {
+            self.debugTriggerDeadlock();
+        });
+    },
+
+    // デバッグ用: 最下行を1列埋めて即座に成仏をテスト
+    debugFillAndClearRow: function () {
+        console.log("【デバッグ】最下行を埋めて成仏テストを実行します");
+        var y = 7;
+        for (var x = 0; x < 8; x++) {
+            if (this.board.gridData[y][x] === null) {
+                var dummyPiece = Piece(PIECE_DEFINITIONS[0], [{ x: 0, y: 0 }]);
+                this.board.placePiece(dummyPiece, [{ x: x, y: y }]);
+            }
+        }
+        var self = this;
+        this.board.checkAndClearLines(function (res) {
+            if (res) {
+                var points = self.scoreManager.addClearScore(res.lineCount, res.totalBlocks, res.catCount);
+                self.updateScoreDisplay(true);
+                self.showFloatingText('✨成仏!! +' + points, self.board.x, self.board.y - 100, '#ff4757');
+            }
+            self.checkGameOver();
+        });
+    },
+
+    // デバッグ用: 盤面をほぼ埋め尽くして即座に「詰み（ゲームオーバー）」をテスト
+    debugTriggerDeadlock: function () {
+        console.log("【デバッグ】盤面を埋めて詰み（ゲームオーバー）をテストします");
+        for (var y = 0; y < 8; y++) {
+            for (var x = 0; x < 8; x++) {
+                // 1マスだけ空けて、それ以外をすべて埋める（ほとんどのピースが置けなくなる）
+                if (!(x === 0 && y === 0) && this.board.gridData[y][x] === null) {
+                    var dummy = Piece(PIECE_DEFINITIONS[0], [{ x: 0, y: 0 }]);
+                    this.board.placePiece(dummy, [{ x: x, y: y }]);
+                }
+            }
+        }
+        this.checkGameOver();
     },
 
     // 下部3スロット台座の作成
@@ -166,13 +259,183 @@ phina.define('MainScene', {
             .play();
     },
 
+    // ★ フェーズ5: 手持ちピースの配置可能性チェック ＆ 詰み（ゲームオーバー）判定
+    checkGameOver: function () {
+        if (this.isGameOver) return;
+
+        var slots = this.pieceStock.slots;
+        var hasPlayable = false;
+
+        for (var i = 0; i < slots.length; i++) {
+            var piece = slots[i];
+            if (piece) {
+                var canPlace = this.board.canPlaceAnywhere(piece);
+                piece.setPlayableState(canPlace);
+                if (canPlace) {
+                    hasPlayable = true;
+                }
+            }
+        }
+
+        // 手持ちの全ピースがどこにも置けない場合 -> 詰み（ゲームオーバー）！
+        if (!hasPlayable) {
+            console.log("【詰み判定発動】置ける猫がいません。GAME OVER！");
+            this.triggerGameOver();
+        }
+    },
+
+    // ゲームオーバー演出とリザルト画面の表示
+    triggerGameOver: function () {
+        this.isGameOver = true;
+        var self = this;
+
+        // すこし余韻を持たせてからモーダルをポップアップ表示
+        setTimeout(function () {
+            self.showGameOverModal();
+        }, 500);
+    },
+
+    // ゲームオーバーモーダル（ダイアログ）の描画
+    showGameOverModal: function () {
+        var modal = DisplayElement().addChildTo(this.modalLayer);
+
+        // 画面全体の暗転オーバーレイ
+        var overlay = RectangleShape({
+            width: GameConfig.SCREEN_WIDTH,
+            height: GameConfig.SCREEN_HEIGHT,
+            fill: 'rgba(0, 0, 0, 0.6)',
+        }).addChildTo(modal)
+            .setPosition(GameConfig.SCREEN_WIDTH / 2, GameConfig.SCREEN_HEIGHT / 2);
+
+        overlay.setInteractive(true); // 下の盤面へのクリックをブロック
+
+        // ダイアログベース枠
+        var dialog = RectangleShape({
+            width: 350,
+            height: 300,
+            fill: '#ffffff',
+            stroke: '#d8b982',
+            strokeWidth: 4,
+            cornerRadius: 18,
+            shadow: 'rgba(0, 0, 0, 0.3)',
+            shadowBlur: 16,
+        }).addChildTo(modal)
+            .setPosition(GameConfig.SCREEN_WIDTH / 2, GameConfig.SCREEN_HEIGHT / 2);
+
+        // ポップアップ登場アニメーション
+        dialog.scaleX = 0.5;
+        dialog.scaleY = 0.5;
+        dialog.alpha = 0;
+        dialog.tweener
+            .clear()
+            .to({ scaleX: 1.0, scaleY: 1.0, alpha: 1.0 }, 280, 'easeOutBack')
+            .play();
+
+        // タイトル
+        Label({
+            text: '🐾 GAME OVER 🐾',
+            fontSize: 24,
+            fontWeight: 'bold',
+            fill: '#5c4838',
+        }).addChildTo(dialog)
+            .setPosition(0, -95);
+
+        // 新記録判定
+        var isNewBest = (this.scoreManager.currentScore >= this.scoreManager.highScore && this.scoreManager.currentScore > 0);
+        if (isNewBest) {
+            Label({
+                text: '🎉 NEW BEST RECORD! 🎉',
+                fontSize: 13,
+                fontWeight: 'bold',
+                fill: '#e67332',
+            }).addChildTo(dialog)
+                .setPosition(0, -60);
+        }
+
+        // 今回のスコアラベル
+        Label({
+            text: 'SCORE',
+            fontSize: 13,
+            fontWeight: 'bold',
+            fill: '#8e796c',
+        }).addChildTo(dialog)
+            .setPosition(0, -25);
+
+        Label({
+            text: this.scoreManager.currentScore.toString(),
+            fontSize: 32,
+            fontWeight: 'bold',
+            fill: '#e67332',
+        }).addChildTo(dialog)
+            .setPosition(0, 5);
+
+        // ハイスコアラベル
+        Label({
+            text: 'BEST SCORE: ' + this.scoreManager.highScore,
+            fontSize: 14,
+            fontWeight: 'bold',
+            fill: '#5c4838',
+        }).addChildTo(dialog)
+            .setPosition(0, 45);
+
+        // 「もう一度あそぶ」リトライボタン
+        var retryBtn = RectangleShape({
+            width: 190,
+            height: 44,
+            fill: '#e67332',
+            stroke: '#c85a1c',
+            strokeWidth: 2,
+            cornerRadius: 22,
+            shadow: 'rgba(230, 115, 50, 0.4)',
+            shadowBlur: 8,
+        }).addChildTo(dialog)
+            .setPosition(0, 95);
+
+        Label({
+            text: 'もう一度あそぶ 🐾',
+            fontSize: 16,
+            fontWeight: 'bold',
+            fill: '#ffffff',
+        }).addChildTo(retryBtn);
+
+        retryBtn.setInteractive(true);
+        var self = this;
+        retryBtn.on('pointstart', function () {
+            modal.remove();
+            self.restartGame();
+        });
+    },
+
+    // ゲームのリスタート（リトライ）
+    restartGame: function () {
+        console.log("【リスタート】ゲームを初期状態に戻します");
+        // 1. 盤面をクリア
+        this.board.resetAll();
+
+        // 2. スコアを0にリセット
+        this.scoreManager.resetScore();
+        this.updateScoreDisplay(false);
+
+        // 3. スロットの3体を新規補充
+        this.pieceStock.replenishAll();
+
+        // 4. ゲームオーバーフラグ解除
+        this.isGameOver = false;
+
+        // 5. 詰みチェック＆スロットの透明度を更新
+        var self = this;
+        setTimeout(function () {
+            self.checkGameOver();
+        }, 100);
+    },
+
     // ドラッグ＆ドロップイベントの制御
     setupDragEvents: function () {
         var self = this;
 
         // ドラッグ中の移動追従
         this.on('pointmove', function (e) {
-            if (!self.draggingPiece) return;
+            if (!self.draggingPiece || self.isGameOver) return;
 
             var piece = self.draggingPiece;
             // 指やカーソルでブロックが隠れないように、少し上（Y: -50px）にオフセット
@@ -206,7 +469,7 @@ phina.define('MainScene', {
 
         // ドロップ（指・マウスを離した時）
         this.on('pointend', function (e) {
-            if (!self.draggingPiece) return;
+            if (!self.draggingPiece || self.isGameOver) return;
 
             var piece = self.draggingPiece;
             var slotIndex = piece.slotIndex;
@@ -249,6 +512,9 @@ phina.define('MainScene', {
                         }
                         self.showFloatingText(msg, self.board.x, self.board.y - 110, '#ff4757');
                     }
+
+                    // 4. ★ 配置・消去後に詰み判定（ゲームオーバーチェック）
+                    self.checkGameOver();
                 });
             } else {
                 // 配置失敗（スロットの位置へ戻す）
@@ -275,7 +541,7 @@ phina.define('MainScene', {
 
     // ピースのドラッグ開始処理 (Piece の pointstart から呼び出される)
     startDragPiece: function (piece, event) {
-        if (this.draggingPiece || this.isClearing) return;
+        if (this.draggingPiece || this.isClearing || this.isGameOver) return;
 
         this.draggingPiece = piece;
         this.currentDropCells = null;

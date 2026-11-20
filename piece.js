@@ -102,7 +102,7 @@ var pieceUniqueIdCounter = 1;
 phina.define('Piece', {
     superClass: 'DisplayElement',
 
-    init: function(shapeDef, variationCoords) {
+    init: function (shapeDef, variationCoords) {
         this.superInit();
 
         this.uid = pieceUniqueIdCounter++;
@@ -123,7 +123,7 @@ phina.define('Piece', {
 
         // ピース全体のバウンディングボックスを計算
         var minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
-        this.coords.forEach(function(c) {
+        this.coords.forEach(function (c) {
             if (c.x < minX) minX = c.x;
             if (c.x > maxX) maxX = c.x;
             if (c.y < minY) minY = c.y;
@@ -154,7 +154,7 @@ phina.define('Piece', {
                 shadow: 'rgba(0,0,0,0.12)',
                 shadowBlur: 4,
             }).addChildTo(this)
-              .setPosition(bx, by);
+                .setPosition(bx, by);
 
             // 先頭ブロックに猫耳と顔マークを付ける（仮スプライト）
             if (i === 0) {
@@ -165,8 +165,8 @@ phina.define('Piece', {
                     stroke: this.stroke,
                     strokeWidth: 1,
                 }).addChildTo(block)
-                  .setPosition(-9, -14)
-                  .setRotation(-15);
+                    .setPosition(-9, -14)
+                    .setRotation(-15);
 
                 // 右耳
                 TriangleShape({
@@ -175,15 +175,15 @@ phina.define('Piece', {
                     stroke: this.stroke,
                     strokeWidth: 1,
                 }).addChildTo(block)
-                  .setPosition(9, -14)
-                  .setRotation(15);
+                    .setPosition(9, -14)
+                    .setRotation(15);
 
                 // 顔アイコン
                 Label({
                     text: '🐱',
                     fontSize: 16,
                 }).addChildTo(block)
-                  .setPosition(0, 0);
+                    .setPosition(0, 0);
             } else {
                 // 胴体には肉球マーク
                 Label({
@@ -191,7 +191,7 @@ phina.define('Piece', {
                     fontSize: 12,
                     fill: 'rgba(255,255,255,0.7)',
                 }).addChildTo(block)
-                  .setPosition(0, 0);
+                    .setPosition(0, 0);
             }
 
             this.blockSprites.push(block);
@@ -204,7 +204,7 @@ phina.define('Piece', {
         this.height = this.gridHeight * this.pitch;
 
         var self = this;
-        this.on('pointstart', function(e) {
+        this.on('pointstart', function (e) {
             var scene = self.getRoot();
             if (scene && scene.startDragPiece) {
                 scene.startDragPiece(self, e);
@@ -213,9 +213,9 @@ phina.define('Piece', {
     },
 
     // 子要素を完全に破棄して自身を削除
-    destroyPiece: function() {
+    destroyPiece: function () {
         if (this.children) {
-            this.children.forEach(function(child) {
+            this.children.forEach(function (child) {
                 if (child.children) child.children.clear();
             });
             this.children.clear();
@@ -223,9 +223,17 @@ phina.define('Piece', {
         this.remove();
     },
 
+    // 配置可能状態（置けないときは半透明にして視覚的にフィードバック）
+    setPlayableState: function (playable) {
+        this.isPlayable = playable;
+        this.tweener
+            .to({ alpha: playable ? 1.0 : 0.35 }, 200)
+            .play();
+    },
+
     // ランダムな猫ピースを生成するファクトリメソッド
     _static: {
-        createRandom: function() {
+        createRandom: function () {
             var shapeDef = PIECE_DEFINITIONS.random();
             var coords = shapeDef.variations.random();
             return Piece(shapeDef, coords);
@@ -237,7 +245,7 @@ phina.define('Piece', {
 phina.define('PieceStock', {
     superClass: 'DisplayElement',
 
-    init: function() {
+    init: function () {
         this.superInit();
 
         this.slots = [null, null, null];
@@ -254,7 +262,7 @@ phina.define('PieceStock', {
     },
 
     // 指定スロットに新しい猫ピースを生成・配置
-    replenish: function(slotIndex) {
+    replenish: function (slotIndex) {
         if (slotIndex < 0 || slotIndex >= 3) return;
 
         // 既存ピースがあれば破棄
@@ -285,14 +293,21 @@ phina.define('PieceStock', {
     },
 
     // スロットのピースを取得
-    getPiece: function(slotIndex) {
+    getPiece: function (slotIndex) {
         return this.slots[slotIndex];
     },
 
     // スロットからピースを取り出す（配置時用）
-    takePiece: function(slotIndex) {
+    takePiece: function (slotIndex) {
         var piece = this.slots[slotIndex];
         this.slots[slotIndex] = null;
         return piece;
+    },
+
+    // 全スロットをクリアして新規3体補充
+    replenishAll: function () {
+        for (var i = 0; i < 3; i++) {
+            this.replenish(i);
+        }
     }
 });

@@ -115,6 +115,53 @@ phina.define('Board', {
         return true;
     },
 
+    // ★ フェーズ5: 指定したピースが盤面のどこかに1箇所でも配置可能か判定（詰みチェック用）
+    canPlaceAnywhere: function(piece) {
+        if (!piece || !piece.coords || piece.coords.length === 0) return false;
+
+        var c0 = piece.coords[0];
+        // 盤面の全マス (y, x) を基準マス (c0 の配置位置) として総当たり判定
+        for (var gy = 0; gy < this.gridCount; gy++) {
+            for (var gx = 0; gx < this.gridCount; gx++) {
+                var canPlace = true;
+
+                for (var i = 0; i < piece.coords.length; i++) {
+                    var c = piece.coords[i];
+                    var targetX = gx + (c.x - c0.x);
+                    var targetY = gy + (c.y - c0.y);
+
+                    if (!this.isValidGrid(targetX, targetY) || this.gridData[targetY][targetX] !== null) {
+                        canPlace = false;
+                        break;
+                    }
+                }
+
+                if (canPlace) {
+                    return true; // 1箇所でも置けるマスがあれば詰んでいない
+                }
+            }
+        }
+        return false; // 盤面のどこにも置けない（詰み）
+    },
+
+    // 盤面を初期状態に完全リセット
+    resetAll: function() {
+        // 配置済みピース全破棄
+        var children = this.pieceLayer.children.slice();
+        children.forEach(function(p) {
+            if (p.destroyPiece) p.destroyPiece();
+            else p.remove();
+        });
+
+        // 盤面グリッドデータを null にリセット
+        for (var y = 0; y < this.gridCount; y++) {
+            for (var x = 0; x < this.gridCount; x++) {
+                this.gridData[y][x] = null;
+            }
+        }
+        this.clearGuide();
+    },
+
     // ドラッグ時のガイド枠（ハイライト）を表示
     showGuide: function (cells, isValid, color) {
         this.clearGuide();
