@@ -1,11 +1,11 @@
-// ピースの形状定義とポーズ定義
+// ピースの形状定義とポーズ定義（全ポーズをはっきりと識別できる7色に分離）
 const PIECE_DEFINITIONS = [
     // --- 1ブロック (丸まり猫) ---
     {
         type: '1_SINGLE',
         pose: '丸まり猫',
-        color: '#f6ad55', // 茶トラオレンジ
-        stroke: '#dd6b20',
+        color: '#ff9233', // 鮮やかな茶トラオレンジ
+        stroke: '#d96b00',
         variations: [
             [{ x: 0, y: 0 }]
         ]
@@ -15,8 +15,8 @@ const PIECE_DEFINITIONS = [
     {
         type: '2_I',
         pose: '横向き猫',
-        color: '#fc8181', // サーモンピンク
-        stroke: '#e53e3e',
+        color: '#ff5964', // コーラルピンク/レッド
+        stroke: '#d9303e',
         variations: [
             [{ x: 0, y: 0 }, { x: 1, y: 0 }], // 横
             [{ x: 0, y: 0 }, { x: 0, y: 1 }]  // 縦
@@ -27,8 +27,8 @@ const PIECE_DEFINITIONS = [
     {
         type: '3_I',
         pose: '伸び猫',
-        color: '#68d391', // ミントグリーン
-        stroke: '#38a169',
+        color: '#51cf66', // 若草ライムグリーン
+        stroke: '#2b8a3e',
         variations: [
             [{ x: 0, y: 0 }, { x: 1, y: 0 }, { x: 2, y: 0 }], // 横
             [{ x: 0, y: 0 }, { x: 0, y: 1 }, { x: 0, y: 2 }]  // 縦
@@ -39,8 +39,8 @@ const PIECE_DEFINITIONS = [
     {
         type: '3_L',
         pose: 'くの字猫',
-        color: '#63b3ed', // スカイブルー
-        stroke: '#3182ce',
+        color: '#339af0', // 鮮やかなスカイブルー
+        stroke: '#1c7ed6',
         variations: [
             [{ x: 0, y: 0 }, { x: 0, y: 1 }, { x: 1, y: 1 }],
             [{ x: 1, y: 0 }, { x: 1, y: 1 }, { x: 0, y: 1 }],
@@ -53,8 +53,8 @@ const PIECE_DEFINITIONS = [
     {
         type: '4_I',
         pose: '長〜い猫',
-        color: '#b794f4', // ラベンダーパープル
-        stroke: '#805ad5',
+        color: '#cc5de8', // アメジストパープル
+        stroke: '#ae3ec9',
         variations: [
             [{ x: 0, y: 0 }, { x: 1, y: 0 }, { x: 2, y: 0 }, { x: 3, y: 0 }], // 横
             [{ x: 0, y: 0 }, { x: 0, y: 1 }, { x: 0, y: 2 }, { x: 0, y: 3 }]  // 縦
@@ -65,8 +65,8 @@ const PIECE_DEFINITIONS = [
     {
         type: '4_L',
         pose: '直角猫',
-        color: '#4fd1c5', // ターコイズ
-        stroke: '#319795',
+        color: '#20c997', // エメラルドターコイズ
+        stroke: '#0ca678',
         variations: [
             // 縦長 3x2
             [{ x: 0, y: 0 }, { x: 0, y: 1 }, { x: 0, y: 2 }, { x: 1, y: 2 }],
@@ -85,8 +85,8 @@ const PIECE_DEFINITIONS = [
     {
         type: '4_Z',
         pose: 'くねくね猫',
-        color: '#f6ad55', // アンバー
-        stroke: '#dd6b20',
+        color: '#fcc419', // ハニーマスタードイエロー
+        stroke: '#e67700',
         variations: [
             [{ x: 0, y: 0 }, { x: 1, y: 0 }, { x: 1, y: 1 }, { x: 2, y: 1 }], // 横Z
             [{ x: 1, y: 0 }, { x: 0, y: 1 }, { x: 1, y: 1 }, { x: 0, y: 2 }], // 縦Z
@@ -133,16 +133,16 @@ phina.define('Piece', {
         this.gridHeight = maxY - minY + 1;
 
         // 中心オフセット（ピースの中心が原点 (0, 0) になるよう調整）
-        var pitch = this.cellSize + this.cellGap;
-        var offsetX = -((this.gridWidth - 1) * pitch) / 2;
-        var offsetY = -((this.gridHeight - 1) * pitch) / 2;
+        this.pitch = this.cellSize + this.cellGap;
+        this.offsetX = -((this.gridWidth - 1) * this.pitch) / 2;
+        this.offsetY = -((this.gridHeight - 1) * this.pitch) / 2;
 
         // ブロックごとの矩形を描画
         this.blockSprites = [];
         for (var i = 0; i < this.coords.length; i++) {
             var c = this.coords[i];
-            var bx = offsetX + c.x * pitch;
-            var by = offsetY + c.y * pitch;
+            var bx = this.offsetX + c.x * this.pitch;
+            var by = this.offsetY + c.y * this.pitch;
 
             var block = RectangleShape({
                 width: this.cellSize,
@@ -196,6 +196,20 @@ phina.define('Piece', {
 
             this.blockSprites.push(block);
         }
+
+        // ドラッグ操作を有効化
+        this.setInteractive(true);
+        this.boundingType = 'rect';
+        this.width = this.gridWidth * this.pitch;
+        this.height = this.gridHeight * this.pitch;
+
+        var self = this;
+        this.on('pointstart', function(e) {
+            var scene = self.getRoot();
+            if (scene && scene.startDragPiece) {
+                scene.startDragPiece(self, e);
+            }
+        });
     },
 
     // ランダムな猫ピースを生成するファクトリメソッド
