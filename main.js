@@ -6,24 +6,33 @@ const ASSETS = {
 const SOUNDS = {
 };
 
-var click_hander = function(){
+var click_handler = function() {
+    var frontPage = document.getElementById("front_page");
+    if (frontPage) {
+        frontPage.remove();
+    }
+
+    document.getElementById("canvas").style = "display: block;";
+
     // メイン処理
     phina.main(function() {
         // アプリケーション生成
         var app = GameApp({
-            startLabel: 'main', // メインシーンから開始する
+            query: '#canvas',
+            startLabel: 'main', // メインシーンから開始
             width: GameConfig.SCREEN_WIDTH,
             height: GameConfig.SCREEN_HEIGHT,
-            // assets: ASSETS
+            fps: 60,
         });
         // アプリケーション実行
         app.run();
     });
-    document.getElementById("front_page").remove();
-    document.removeEventListener("click", click_hander);
 };
-window.onload = () => {
 
+window.onload = () => {
     MySoundManager.loadAssets(SOUNDS);
-    document.getElementById("game_launch").addEventListener("click", click_hander);
+    var launchBtn = document.getElementById("game_launch");
+    if (launchBtn) {
+        launchBtn.addEventListener("click", click_handler);
+    }
 };
