@@ -212,6 +212,17 @@ phina.define('Piece', {
         });
     },
 
+    // 子要素を完全に破棄して自身を削除
+    destroyPiece: function() {
+        if (this.children) {
+            this.children.forEach(function(child) {
+                if (child.children) child.children.clear();
+            });
+            this.children.clear();
+        }
+        this.remove();
+    },
+
     // ランダムな猫ピースを生成するファクトリメソッド
     _static: {
         createRandom: function() {
