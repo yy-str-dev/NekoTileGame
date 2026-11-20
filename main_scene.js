@@ -6,30 +6,29 @@ phina.define('MainScene', {
         // 背景色を指定
         this.backgroundColor = '#d2eaff';
 
-        drawStage(this);
+        this.drawStage(this);
     },
     update: function(){
 
+    },
+    drawStage: function(group){
+        var pos = calcPosition(PositionOrigin.LEFT_CENTER, Vector2(16, 0)),
+            quad = RectangleShape({
+                width: this.stageWidth(),
+                height: this.stageHeight(),
+                fill: "#fff8aa",
+                stroke: "#cabe39",
+                cornerRadius: 10
+            }).addChildTo(group)
+            .setOrigin(0, 0.5)
+            .setPosition(pos.x, pos.y);
+    },
+    drawGrid: function(group){
+    },
+    stageWidth: function(){
+        return calcWidthScreenRate(0.6);
+    },
+    stageHeight: function(){
+        return this.stageWidth();
     }
 });
-
-function drawStage(group){
-    var pos = calcPosition(PositionOrigin.LEFT_CENTER, new Vector2(16, 0)),
-        quad = RectangleShape({
-            width: stageWidth(),
-            height: stageHeight(),
-            fill: "#fff8aa",
-            stroke: "#cabe39",
-            cornerRadius: 30
-        }).addChildTo(group)
-        .setOrigin(0, 0.5)
-        .setPosition(pos.x, pos.y);
-}
-
-function stageWidth(){
-    return calcWidthScreenRate(0.6);
-}
-
-function stageHeight(){
-    return stageWidth();
-}
