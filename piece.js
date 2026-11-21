@@ -235,6 +235,51 @@ const PIECE_DEFINITIONS = [
         color: '#fcc419',
         stroke: '#e67700',
         coords: [{ x: 0, y: 0 }, { x: 0, y: 1 }, { x: 1, y: 1 }, { x: 1, y: 2 }]
+    },
+    {
+        id: '4_sq',
+        type: '4_sq',
+        pose: '太った猫',
+        imageKey: 'neko_4_sq',
+        color: '#fcc419',
+        stroke: '#e67700',
+        coords: [{ x: 0, y: 0 }, { x: 0, y: 1 }, { x: 1, y: 0 }, { x: 1, y: 1 }]
+    },
+    {
+        id: '4_totsu_1',
+        type: '4_totsu',
+        pose: '凸猫（上）',
+        imageKey: 'neko_4_totsu_1',
+        color: '#fcc419',
+        stroke: '#e67700',
+        coords: [{ x: 1, y: 0 }, { x: 0, y: 1 }, { x: 1, y: 1 }, { x: 2, y: 1 }]
+    },
+    {
+        id: '4_totsu_2',
+        type: '4_totsu',
+        pose: '凸猫（右）',
+        imageKey: 'neko_4_totsu_2',
+        color: '#fcc419',
+        stroke: '#e67700',
+        coords: [{ x: 0, y: 0 }, { x: 0, y: 1 }, { x: 1, y: 1 }, { x: 0, y: 2 }]
+    },
+    {
+        id: '4_totsu_3',
+        type: '4_totsu',
+        pose: '凸猫（下）',
+        imageKey: 'neko_4_totsu_3',
+        color: '#fcc419',
+        stroke: '#e67700',
+        coords: [{ x: 0, y: 0 }, { x: 1, y: 0 }, { x: 2, y: 0 }, { x: 1, y: 1 }]
+    },
+    {
+        id: '4_totsu_4',
+        type: '4_totsu',
+        pose: '凸猫（左）',
+        imageKey: 'neko_4_totsu_4',
+        color: '#fcc419',
+        stroke: '#e67700',
+        coords: [{ x: 1, y: 0 }, { x: 0, y: 1 }, { x: 1, y: 1 }, { x: 1, y: 2 }]
     }
 ];
 
