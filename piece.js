@@ -1,98 +1,240 @@
-// ピースの形状定義とポーズ定義（全ポーズをはっきりと識別できる7色に分離）
+// ピースの形状定義（回転・縦横パターンをすべて独立した固有定義に分割）
 const PIECE_DEFINITIONS = [
-    // --- 1ブロック (丸まり猫) ---
+    // ==========================================
+    // 1ブロック (1種類)
+    // ==========================================
     {
+        id: '1_single',
         type: '1_SINGLE',
         pose: '丸まり猫',
-        color: '#ff9233', // 鮮やかな茶トラオレンジ
+        imageKey: 'neko_1', // 画像アセットのキー名
+        color: '#ff9233',
         stroke: '#d96b00',
-        variations: [
-            [{ x: 0, y: 0 }]
-        ]
+        coords: [{ x: 0, y: 0 }]
     },
 
-    // --- 2ブロック (横向き猫) ---
+    // ==========================================
+    // 2ブロック (2種類: 横・縦)
+    // ==========================================
     {
+        id: '2_i_h',
         type: '2_I',
-        pose: '横向き猫',
-        color: '#ff5964', // コーラルピンク/レッド
+        pose: '横向き猫 (横)',
+        imageKey: 'neko_2_i_h',
+        color: '#ff5964',
         stroke: '#d9303e',
-        variations: [
-            [{ x: 0, y: 0 }, { x: 1, y: 0 }], // 横
-            [{ x: 0, y: 0 }, { x: 0, y: 1 }]  // 縦
-        ]
+        coords: [{ x: 0, y: 0 }, { x: 1, y: 0 }]
+    },
+    {
+        id: '2_i_v',
+        type: '2_I',
+        pose: '横向き猫 (縦)',
+        imageKey: 'neko_2_i_v',
+        color: '#ff5964',
+        stroke: '#d9303e',
+        coords: [{ x: 0, y: 0 }, { x: 0, y: 1 }]
     },
 
-    // --- 3ブロック (伸び猫: I字) ---
+    // ==========================================
+    // 3ブロック I字 (2種類: 横・縦)
+    // ==========================================
     {
+        id: '3_i_h',
         type: '3_I',
-        pose: '伸び猫',
-        color: '#51cf66', // 若草ライムグリーン
+        pose: '伸び猫 (横)',
+        imageKey: 'neko_3_i_h',
+        color: '#51cf66',
         stroke: '#2b8a3e',
-        variations: [
-            [{ x: 0, y: 0 }, { x: 1, y: 0 }, { x: 2, y: 0 }], // 横
-            [{ x: 0, y: 0 }, { x: 0, y: 1 }, { x: 0, y: 2 }]  // 縦
-        ]
+        coords: [{ x: 0, y: 0 }, { x: 1, y: 0 }, { x: 2, y: 0 }]
+    },
+    {
+        id: '3_i_v',
+        type: '3_I',
+        pose: '伸び猫 (縦)',
+        imageKey: 'neko_3_i_v',
+        color: '#51cf66',
+        stroke: '#2b8a3e',
+        coords: [{ x: 0, y: 0 }, { x: 0, y: 1 }, { x: 0, y: 2 }]
     },
 
-    // --- 3ブロック (くの字猫: L字) ---
+    // ==========================================
+    // 3ブロック L字 (4種類: 4方向回転)
+    // ==========================================
     {
+        id: '3_l_0',
         type: '3_L',
-        pose: 'くの字猫',
-        color: '#339af0', // 鮮やかなスカイブルー
+        pose: 'くの字猫 (右下)',
+        imageKey: 'neko_3_l_0',
+        color: '#339af0',
         stroke: '#1c7ed6',
-        variations: [
-            [{ x: 0, y: 0 }, { x: 0, y: 1 }, { x: 1, y: 1 }],
-            [{ x: 1, y: 0 }, { x: 1, y: 1 }, { x: 0, y: 1 }],
-            [{ x: 0, y: 0 }, { x: 1, y: 0 }, { x: 0, y: 1 }],
-            [{ x: 0, y: 0 }, { x: 1, y: 0 }, { x: 1, y: 1 }]
-        ]
+        coords: [{ x: 0, y: 0 }, { x: 0, y: 1 }, { x: 1, y: 1 }]
+    },
+    {
+        id: '3_l_1',
+        type: '3_L',
+        pose: 'くの字猫 (左下)',
+        imageKey: 'neko_3_l_1',
+        color: '#339af0',
+        stroke: '#1c7ed6',
+        coords: [{ x: 1, y: 0 }, { x: 1, y: 1 }, { x: 0, y: 1 }]
+    },
+    {
+        id: '3_l_2',
+        type: '3_L',
+        pose: 'くの字猫 (左上)',
+        imageKey: 'neko_3_l_2',
+        color: '#339af0',
+        stroke: '#1c7ed6',
+        coords: [{ x: 0, y: 0 }, { x: 1, y: 0 }, { x: 0, y: 1 }]
+    },
+    {
+        id: '3_l_3',
+        type: '3_L',
+        pose: 'くの字猫 (右上)',
+        imageKey: 'neko_3_l_3',
+        color: '#339af0',
+        stroke: '#1c7ed6',
+        coords: [{ x: 0, y: 0 }, { x: 1, y: 0 }, { x: 1, y: 1 }]
     },
 
-    // --- 4ブロック (長〜い猫: I字) ---
+    // ==========================================
+    // 4ブロック I字 (2種類: 横・縦)
+    // ==========================================
     {
+        id: '4_i_h',
         type: '4_I',
-        pose: '長〜い猫',
-        color: '#cc5de8', // アメジストパープル
+        pose: '長〜い猫 (横)',
+        imageKey: 'neko_4_i_h',
+        color: '#cc5de8',
         stroke: '#ae3ec9',
-        variations: [
-            [{ x: 0, y: 0 }, { x: 1, y: 0 }, { x: 2, y: 0 }, { x: 3, y: 0 }], // 横
-            [{ x: 0, y: 0 }, { x: 0, y: 1 }, { x: 0, y: 2 }, { x: 0, y: 3 }]  // 縦
-        ]
+        coords: [{ x: 0, y: 0 }, { x: 1, y: 0 }, { x: 2, y: 0 }, { x: 3, y: 0 }]
+    },
+    {
+        id: '4_i_v',
+        type: '4_I',
+        pose: '長〜い猫 (縦)',
+        imageKey: 'neko_4_i_v',
+        color: '#cc5de8',
+        stroke: '#ae3ec9',
+        coords: [{ x: 0, y: 0 }, { x: 0, y: 1 }, { x: 0, y: 2 }, { x: 0, y: 3 }]
     },
 
-    // --- 4ブロック (直角猫: L字) ---
+    // ==========================================
+    // 4ブロック L字 (8種類: 縦長4種・横長4種)
+    // ==========================================
+    // --- 縦長 3x2 ---
     {
+        id: '4_l_v0',
         type: '4_L',
-        pose: '直角猫',
-        color: '#20c997', // エメラルドターコイズ
+        pose: '直角猫 (縦0)',
+        imageKey: 'neko_4_l_v0',
+        color: '#20c997',
         stroke: '#0ca678',
-        variations: [
-            // 縦長 3x2
-            [{ x: 0, y: 0 }, { x: 0, y: 1 }, { x: 0, y: 2 }, { x: 1, y: 2 }],
-            [{ x: 1, y: 0 }, { x: 1, y: 1 }, { x: 1, y: 2 }, { x: 0, y: 2 }],
-            [{ x: 0, y: 0 }, { x: 1, y: 0 }, { x: 0, y: 1 }, { x: 0, y: 2 }],
-            [{ x: 0, y: 0 }, { x: 1, y: 0 }, { x: 1, y: 1 }, { x: 1, y: 2 }],
-            // 横長 2x3
-            [{ x: 0, y: 0 }, { x: 0, y: 1 }, { x: 1, y: 1 }, { x: 2, y: 1 }],
-            [{ x: 0, y: 0 }, { x: 1, y: 0 }, { x: 2, y: 0 }, { x: 0, y: 1 }],
-            [{ x: 0, y: 0 }, { x: 1, y: 0 }, { x: 2, y: 0 }, { x: 2, y: 1 }],
-            [{ x: 2, y: 0 }, { x: 0, y: 1 }, { x: 1, y: 1 }, { x: 2, y: 1 }]
-        ]
+        coords: [{ x: 0, y: 0 }, { x: 0, y: 1 }, { x: 0, y: 2 }, { x: 1, y: 2 }]
+    },
+    {
+        id: '4_l_v1',
+        type: '4_L',
+        pose: '直角猫 (縦1)',
+        imageKey: 'neko_4_l_v1',
+        color: '#20c997',
+        stroke: '#0ca678',
+        coords: [{ x: 1, y: 0 }, { x: 1, y: 1 }, { x: 1, y: 2 }, { x: 0, y: 2 }]
+    },
+    {
+        id: '4_l_v2',
+        type: '4_L',
+        pose: '直角猫 (縦2)',
+        imageKey: 'neko_4_l_v2',
+        color: '#20c997',
+        stroke: '#0ca678',
+        coords: [{ x: 0, y: 0 }, { x: 1, y: 0 }, { x: 0, y: 1 }, { x: 0, y: 2 }]
+    },
+    {
+        id: '4_l_v3',
+        type: '4_L',
+        pose: '直角猫 (縦3)',
+        imageKey: 'neko_4_l_v3',
+        color: '#20c997',
+        stroke: '#0ca678',
+        coords: [{ x: 0, y: 0 }, { x: 1, y: 0 }, { x: 1, y: 1 }, { x: 1, y: 2 }]
+    },
+    // --- 横長 2x3 ---
+    {
+        id: '4_l_h0',
+        type: '4_L',
+        pose: '直角猫 (横0)',
+        imageKey: 'neko_4_l_h0',
+        color: '#20c997',
+        stroke: '#0ca678',
+        coords: [{ x: 0, y: 0 }, { x: 0, y: 1 }, { x: 1, y: 1 }, { x: 2, y: 1 }]
+    },
+    {
+        id: '4_l_h1',
+        type: '4_L',
+        pose: '直角猫 (横1)',
+        imageKey: 'neko_4_l_h1',
+        color: '#20c997',
+        stroke: '#0ca678',
+        coords: [{ x: 0, y: 0 }, { x: 1, y: 0 }, { x: 2, y: 0 }, { x: 0, y: 1 }]
+    },
+    {
+        id: '4_l_h2',
+        type: '4_L',
+        pose: '直角猫 (横2)',
+        imageKey: 'neko_4_l_h2',
+        color: '#20c997',
+        stroke: '#0ca678',
+        coords: [{ x: 0, y: 0 }, { x: 1, y: 0 }, { x: 2, y: 0 }, { x: 2, y: 1 }]
+    },
+    {
+        id: '4_l_h3',
+        type: '4_L',
+        pose: '直角猫 (横3)',
+        imageKey: 'neko_4_l_h3',
+        color: '#20c997',
+        stroke: '#0ca678',
+        coords: [{ x: 2, y: 0 }, { x: 0, y: 1 }, { x: 1, y: 1 }, { x: 2, y: 1 }]
     },
 
-    // --- 4ブロック (くねくね猫: Z字/S字) ---
+    // ==========================================
+    // 4ブロック Z字/S字 (4種類: 横Z・縦Z・横S・縦S)
+    // ==========================================
     {
+        id: '4_z_h',
         type: '4_Z',
-        pose: 'くねくね猫',
-        color: '#fcc419', // ハニーマスタードイエロー
+        pose: 'くねくね猫 (横Z)',
+        imageKey: 'neko_4_z_h',
+        color: '#fcc419',
         stroke: '#e67700',
-        variations: [
-            [{ x: 0, y: 0 }, { x: 1, y: 0 }, { x: 1, y: 1 }, { x: 2, y: 1 }], // 横Z
-            [{ x: 1, y: 0 }, { x: 0, y: 1 }, { x: 1, y: 1 }, { x: 0, y: 2 }], // 縦Z
-            [{ x: 1, y: 0 }, { x: 2, y: 0 }, { x: 0, y: 1 }, { x: 1, y: 1 }], // 横S
-            [{ x: 0, y: 0 }, { x: 0, y: 1 }, { x: 1, y: 1 }, { x: 1, y: 2 }]  // 縦S
-        ]
+        coords: [{ x: 0, y: 0 }, { x: 1, y: 0 }, { x: 1, y: 1 }, { x: 2, y: 1 }]
+    },
+    {
+        id: '4_z_v',
+        type: '4_Z',
+        pose: 'くねくね猫 (縦Z)',
+        imageKey: 'neko_4_z_v',
+        color: '#fcc419',
+        stroke: '#e67700',
+        coords: [{ x: 1, y: 0 }, { x: 0, y: 1 }, { x: 1, y: 1 }, { x: 0, y: 2 }]
+    },
+    {
+        id: '4_s_h',
+        type: '4_Z',
+        pose: 'くねくね猫 (横S)',
+        imageKey: 'neko_4_s_h',
+        color: '#fcc419',
+        stroke: '#e67700',
+        coords: [{ x: 1, y: 0 }, { x: 2, y: 0 }, { x: 0, y: 1 }, { x: 1, y: 1 }]
+    },
+    {
+        id: '4_s_v',
+        type: '4_Z',
+        pose: 'くねくね猫 (縦S)',
+        imageKey: 'neko_4_s_v',
+        color: '#fcc419',
+        stroke: '#e67700',
+        coords: [{ x: 0, y: 0 }, { x: 0, y: 1 }, { x: 1, y: 1 }, { x: 1, y: 2 }]
     }
 ];
 
@@ -102,15 +244,17 @@ var pieceUniqueIdCounter = 1;
 phina.define('Piece', {
     superClass: 'DisplayElement',
 
-    init: function (shapeDef, variationCoords) {
+    init: function (shapeDef, specificCoords) {
         this.superInit();
 
         this.uid = pieceUniqueIdCounter++;
         this.shapeDef = shapeDef;
-        this.coords = variationCoords; // [{x, y}, ...]
+        this.pieceId = shapeDef.id;
+        this.coords = specificCoords || shapeDef.coords;
         this.color = shapeDef.color;
         this.stroke = shapeDef.stroke;
         this.pose = shapeDef.pose;
+        this.imageKey = shapeDef.imageKey;
 
         this.cellSize = GameConfig.CELL_SIZE;
         this.cellGap = GameConfig.CELL_GAP;
@@ -137,71 +281,83 @@ phina.define('Piece', {
         this.offsetX = -((this.gridWidth - 1) * this.pitch) / 2;
         this.offsetY = -((this.gridHeight - 1) * this.pitch) / 2;
 
-        // ブロックごとの矩形を描画
-        this.blockSprites = [];
-        for (var i = 0; i < this.coords.length; i++) {
-            var c = this.coords[i];
-            var bx = this.offsetX + c.x * this.pitch;
-            var by = this.offsetY + c.y * this.pitch;
+        // ピース全体のピクセル幅・高さ
+        var totalW = this.gridWidth * this.cellSize + (this.gridWidth - 1) * this.cellGap;
+        var totalH = this.gridHeight * this.cellSize + (this.gridHeight - 1) * this.cellGap;
 
-            var block = RectangleShape({
-                width: this.cellSize,
-                height: this.cellSize,
-                fill: this.color,
-                stroke: this.stroke,
-                strokeWidth: 2,
-                cornerRadius: 8,
-                shadow: 'rgba(0,0,0,0.12)',
-                shadowBlur: 4,
-            }).addChildTo(this)
-                .setPosition(bx, by);
+        // 画像アセットがロードされているか確認
+        var assetManager = phina.asset.AssetManager;
+        var hasImage = this.imageKey && assetManager && assetManager.get('image', this.imageKey);
 
-            // 先頭ブロックに猫耳と顔マークを付ける（仮スプライト）
-            if (i === 0) {
-                // 左耳
-                TriangleShape({
-                    radius: 7,
-                    fill: this.stroke,
+        if (hasImage) {
+            // ★ 画像スプライトを生成して描画
+            this.sprite = Sprite(this.imageKey).addChildTo(this);
+            this.sprite.width = totalW;
+            this.sprite.height = totalH;
+            this.sprite.setPosition(0, 0);
+        } else {
+            // ★ 画像がまだ用意されていない場合はフォールバック（色付きブロックを描画）
+            this.blockSprites = [];
+            for (var i = 0; i < this.coords.length; i++) {
+                var c = this.coords[i];
+                var bx = this.offsetX + c.x * this.pitch;
+                var by = this.offsetY + c.y * this.pitch;
+
+                var block = RectangleShape({
+                    width: this.cellSize,
+                    height: this.cellSize,
+                    fill: this.color,
                     stroke: this.stroke,
-                    strokeWidth: 1,
-                }).addChildTo(block)
-                    .setPosition(-9, -14)
-                    .setRotation(-15);
+                    strokeWidth: 2,
+                    cornerRadius: 8,
+                    shadow: 'rgba(0,0,0,0.12)',
+                    shadowBlur: 4,
+                }).addChildTo(this)
+                    .setPosition(bx, by);
 
-                // 右耳
-                TriangleShape({
-                    radius: 7,
-                    fill: this.stroke,
-                    stroke: this.stroke,
-                    strokeWidth: 1,
-                }).addChildTo(block)
-                    .setPosition(9, -14)
-                    .setRotation(15);
+                // 先頭ブロックに猫耳と顔マークを付ける（仮スプライト）
+                if (i === 0) {
+                    TriangleShape({
+                        radius: 7,
+                        fill: this.stroke,
+                        stroke: this.stroke,
+                        strokeWidth: 1,
+                    }).addChildTo(block)
+                        .setPosition(-9, -14)
+                        .setRotation(-15);
 
-                // 顔アイコン
-                Label({
-                    text: '🐱',
-                    fontSize: 16,
-                }).addChildTo(block)
-                    .setPosition(0, 0);
-            } else {
-                // 胴体には肉球マーク
-                Label({
-                    text: '🐾',
-                    fontSize: 12,
-                    fill: 'rgba(255,255,255,0.7)',
-                }).addChildTo(block)
-                    .setPosition(0, 0);
+                    TriangleShape({
+                        radius: 7,
+                        fill: this.stroke,
+                        stroke: this.stroke,
+                        strokeWidth: 1,
+                    }).addChildTo(block)
+                        .setPosition(9, -14)
+                        .setRotation(15);
+
+                    Label({
+                        text: '🐱',
+                        fontSize: 16,
+                    }).addChildTo(block)
+                        .setPosition(0, 0);
+                } else {
+                    Label({
+                        text: '🐾',
+                        fontSize: 12,
+                        fill: 'rgba(255,255,255,0.7)',
+                    }).addChildTo(block)
+                        .setPosition(0, 0);
+                }
+
+                this.blockSprites.push(block);
             }
-
-            this.blockSprites.push(block);
         }
 
         // ドラッグ操作を有効化
         this.setInteractive(true);
         this.boundingType = 'rect';
-        this.width = this.gridWidth * this.pitch;
-        this.height = this.gridHeight * this.pitch;
+        this.width = totalW;
+        this.height = totalH;
 
         var self = this;
         this.on('pointstart', function (e) {
@@ -226,17 +382,14 @@ phina.define('Piece', {
     // 配置可能状態（置けないときは半透明にして視覚的にフィードバック）
     setPlayableState: function (playable) {
         this.isPlayable = playable;
-        this.tweener
-            .to({ alpha: playable ? 1.0 : 0.35 }, 200)
-            .play();
+        this.alpha = playable ? 1.0 : 0.35;
     },
 
     // ランダムな猫ピースを生成するファクトリメソッド
     _static: {
         createRandom: function () {
             var shapeDef = PIECE_DEFINITIONS.random();
-            var coords = shapeDef.variations.random();
-            return Piece(shapeDef, coords);
+            return Piece(shapeDef, shapeDef.coords);
         }
     }
 });
