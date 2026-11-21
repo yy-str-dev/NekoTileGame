@@ -431,9 +431,30 @@ phina.define('Piece', {
     },
 
     // ランダムな猫ピースを生成するファクトリメソッド
+    // ブロック数を確率で決定 → そのブロック数の中から均等ランダム選出
     _static: {
         createRandom: function () {
-            var shapeDef = PIECE_DEFINITIONS.random();
+            // ブロック数ごとの確率テーブル (累積)
+            // 1ブロック: 15%, 2ブロック: 25%, 3ブロック: 30%, 4ブロック: 30%
+            var r = Math.random();
+            var targetCount;
+            if (r < 0.05) {
+                targetCount = 1;
+            } else if (r < 0.40) {
+                targetCount = 2;
+            } else if (r < 0.75) {
+                targetCount = 3;
+            } else {
+                targetCount = 4;
+            }
+
+            // 該当ブロック数のピース定義を絞り込む
+            var candidates = PIECE_DEFINITIONS.filter(function (def) {
+                return def.coords.length === targetCount;
+            });
+
+            // 均等ランダムで1つ選出
+            var shapeDef = candidates[Math.floor(Math.random() * candidates.length)];
             return Piece(shapeDef, shapeDef.coords);
         }
     }
