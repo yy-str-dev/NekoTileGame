@@ -221,6 +221,20 @@ phina.define('MainScene', {
                 fill: 'rgba(92, 72, 56, 0.2)',
             }).addChildTo(base);
 
+            // ★ スロット台座をクリック/タップしたとき、そのスロットのピースをドラッグ開始
+            base.setInteractive(true);
+            base.boundingType = 'rect';
+            (function (slotIdx) {
+                base.on('pointstart', function (e) {
+                    var scene = base.getRoot();
+                    if (!scene || !scene.pieceStock) return;
+                    var piece = scene.pieceStock.getPiece(slotIdx);
+                    if (piece && scene.startDragPiece) {
+                        scene.startDragPiece(piece, e);
+                    }
+                });
+            })(i);
+
             this.slotBases.push(base);
         }
     },
