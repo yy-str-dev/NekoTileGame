@@ -432,13 +432,13 @@ phina.define('PieceStock', {
         piece.setScale(0.65);
         piece.setPosition(piece.homePos.x, piece.homePos.y);
 
-        // ふわっと出現するアニメーション
-        piece.alpha = 0;
+        // ふわっと出現するアニメーション（スケールのみ。alphaはcheckGameOverが決定するため触らない）
+        piece.alpha = 1;
         piece.scaleX = 0.2;
         piece.scaleY = 0.2;
         piece.tweener
             .clear()
-            .to({ alpha: 1, scaleX: 0.65, scaleY: 0.65 }, 250, 'easeOutBack')
+            .to({ scaleX: 0.65, scaleY: 0.65 }, 250, 'easeOutBack')
             .play();
 
         this.slots[slotIndex] = piece;
