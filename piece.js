@@ -528,5 +528,16 @@ phina.define('PieceStock', {
         for (var i = 0; i < 3; i++) {
             this.replenish(i);
         }
+    },
+
+    // スロットが空か
+    isEmpty: function () {
+        for (var i = 0; i < 3; i++) {
+            if (this.slots[i] != null) {
+                return false;
+            }
+        }
+
+        return true;
     }
 });

@@ -499,9 +499,12 @@ phina.define('MainScene', {
                 var placePoints = self.scoreManager.addPlaceScore(piece.blockCount);
                 self.updateScoreDisplay(false);
 
-                // 2. スロットから該当ピースを除去し、即時1体補充！
+                // 2. スロットから該当ピースを除去する！
                 self.pieceStock.takePiece(slotIndex);
-                self.pieceStock.replenish(slotIndex);
+
+                if (self.pieceStock.isEmpty()) {
+                    self.pieceStock.replenishAll(slotIndex);
+                }
 
                 self.draggingPiece = null;
                 self.currentDropCells = null;
