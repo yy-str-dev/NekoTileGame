@@ -435,14 +435,14 @@ phina.define('Piece', {
     _static: {
         createRandom: function () {
             // ブロック数ごとの確率テーブル (累積)
-            // 1ブロック: 15%, 2ブロック: 25%, 3ブロック: 30%, 4ブロック: 30%
+            // 1ブロック: 5%, 2ブロック: 30%, 3ブロック: 35%, 4ブロック: 30%
             var r = Math.random();
             var targetCount;
             if (r < 0.05) {
                 targetCount = 1;
-            } else if (r < 0.40) {
+            } else if (r < 0.35) {
                 targetCount = 2;
-            } else if (r < 0.75) {
+            } else if (r < 0.70) {
                 targetCount = 3;
             } else {
                 targetCount = 4;
