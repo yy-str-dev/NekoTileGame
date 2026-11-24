@@ -5,18 +5,23 @@ const ASSETS = {
         // 今後画像を追加する際のキー名一覧（画像ファイルを用意してコメントアウトを解除できます）:
         // 2ブロック
         "neko_2_i_h": "image/neko_2_i_h.png",
-        // "neko_2_i_v": "image/neko_2_i_v.png",
+        "neko_2_i_v": "image/neko_2_i_v.png",
         // 3ブロック
-        // "neko_3_i_h": "image/neko_3_i_h.png",
-        // "neko_3_i_v": "image/neko_3_i_v.png",
-        // "neko_3_l_0": "image/neko_3_l_0.png",
-        // "neko_3_l_1": "image/neko_3_l_1.png",
-        // "neko_3_l_2": "image/neko_3_l_2.png",
-        // "neko_3_l_3": "image/neko_3_l_3.png",
+        "neko_3_i_h": "image/neko_3_i_h.png",
+        "neko_3_i_v": "image/neko_3_i_v.png",
+        "neko_3_l_0": "image/neko_3_l_0.png",
+        "neko_3_l_1": "image/neko_3_l_1.png",
+        "neko_3_l_2": "image/neko_3_l_2.png",
+        "neko_3_l_3": "image/neko_3_l_3.png",
         // 4ブロック
         // "neko_4_i_h": "image/neko_4_i_h.png",
         // "neko_4_i_v": "image/neko_4_i_v.png",
-        // "neko_4_l_v0": "image/neko_4_l_v0.png",
+        "neko_4_l_v0": "image/neko_4_l_v0.png",
+        "neko_4_l_v3": "image/neko_4_l_v3.png",
+        "neko_4_l_h1": "image/neko_4_l_h1.png",
+        "neko_4_l_h3": "image/neko_4_l_h3.png",
+        "neko_4_z_v": "image/neko_4_z_v.png",
+        "neko_4_z_h": "image/neko_4_z_h.png",
         // ...
     },
 };
