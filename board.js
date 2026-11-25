@@ -1,3 +1,64 @@
+// お邪魔猫クラス（1x1固定・ライン消去対象外・一定ターン経過で消滅）
+phina.define('ObstacleCat', {
+    superClass: 'DisplayElement',
+
+    init: function (turns) {
+        this.superInit();
+
+        this.isObstacle = true;
+        this.remainingTurns = turns || 4;
+        this.placedCell = null;
+
+        var size = GameConfig.CELL_SIZE;
+
+        // お邪魔猫の本体ブロック
+        RectangleShape({
+            width: size,
+            height: size,
+            fill: '#6c757d',
+            stroke: '#495057',
+            strokeWidth: 2,
+            cornerRadius: 8,
+            shadow: 'rgba(0,0,0,0.18)',
+            shadowBlur: 4,
+        }).addChildTo(this);
+
+        // お邪魔猫アイコン
+        Label({
+            text: '😾',
+            fontSize: 16,
+        }).addChildTo(this)
+            .setPosition(0, -3);
+
+        // 残りターン数バッジ
+        this.turnLabel = Label({
+            text: this.remainingTurns.toString(),
+            fontSize: 11,
+            fontWeight: 'bold',
+            fill: '#fff3bf',
+            stroke: '#212529',
+            strokeWidth: 3,
+        }).addChildTo(this)
+            .setPosition(10, 10);
+    },
+
+    updateTurnLabel: function () {
+        if (this.turnLabel) {
+            this.turnLabel.text = this.remainingTurns.toString();
+        }
+    },
+
+    destroyPiece: function () {
+        if (this.children) {
+            this.children.forEach(function (child) {
+                if (child.children) child.children.clear();
+            });
+            this.children.clear();
+        }
+        this.remove();
+    }
+});
+
 // Board (8x8 盤面) クラスの定義
 phina.define('Board', {
     superClass: 'DisplayElement',
@@ -116,7 +177,7 @@ phina.define('Board', {
     },
 
     // ★ フェーズ5: 指定したピースが盤面のどこかに1箇所でも配置可能か判定（詰みチェック用）
-    canPlaceAnywhere: function(piece) {
+    canPlaceAnywhere: function (piece) {
         if (!piece || !piece.coords || piece.coords.length === 0) return false;
 
         var c0 = piece.coords[0];
@@ -145,10 +206,10 @@ phina.define('Board', {
     },
 
     // 盤面を初期状態に完全リセット
-    resetAll: function() {
+    resetAll: function () {
         // 配置済みピース全破棄
         var children = this.pieceLayer.children.slice();
-        children.forEach(function(p) {
+        children.forEach(function (p) {
             if (p.destroyPiece) p.destroyPiece();
             else p.remove();
         });
@@ -232,12 +293,13 @@ phina.define('Board', {
         var fullRows = [];
         var fullCols = [];
 
-        // 1. 縦横のライン走査
+        // 1. 縦横のライン走査（お邪魔猫がいるマスは揃ったとみなさない）
         // 行判定
         for (var y = 0; y < this.gridCount; y++) {
             var rowFull = true;
             for (var x = 0; x < this.gridCount; x++) {
-                if (this.gridData[y][x] === null) {
+                var cell = this.gridData[y][x];
+                if (cell === null || cell.isObstacle) {
                     rowFull = false;
                     break;
                 }
@@ -249,7 +311,8 @@ phina.define('Board', {
         for (var x = 0; x < this.gridCount; x++) {
             var colFull = true;
             for (var y = 0; y < this.gridCount; y++) {
-                if (this.gridData[y][x] === null) {
+                var cell = this.gridData[y][x];
+                if (cell === null || cell.isObstacle) {
                     colFull = false;
                     break;
                 }
@@ -266,20 +329,20 @@ phina.define('Board', {
 
         console.log("【ライン消去発動!】 揃った行:", fullRows, "揃った列:", fullCols);
 
-        // 2. 揃ったラインにかかっている猫（ピース）を重複なく抽出
+        // 2. 揃ったラインにかかっている猫（ピース）を重複なく抽出（お邪魔猫は除外）
         var targetPiecesSet = new Set();
 
         fullRows.forEach(function (rowY) {
             for (var x = 0; x < this.gridCount; x++) {
                 var piece = this.gridData[rowY][x];
-                if (piece) targetPiecesSet.add(piece);
+                if (piece && !piece.isObstacle) targetPiecesSet.add(piece);
             }
         }, this);
 
         fullCols.forEach(function (colX) {
             for (var y = 0; y < this.gridCount; y++) {
                 var piece = this.gridData[y][colX];
-                if (piece) targetPiecesSet.add(piece);
+                if (piece && !piece.isObstacle) targetPiecesSet.add(piece);
             }
         }, this);
 
@@ -311,9 +374,79 @@ phina.define('Board', {
                 onClearComplete({
                     lineCount: totalLines,
                     catCount: targetPieces.length,
-                    totalBlocks: totalClearedBlocks
+                    totalBlocks: totalClearedBlocks,
+                    clearedPieces: targetPieces
                 });
             }
+        });
+    },
+
+    // お邪魔猫を空きマスへランダムに追加
+    spawnObstacleCats: function (count) {
+        var emptyCells = [];
+        for (var y = 0; y < this.gridCount; y++) {
+            for (var x = 0; x < this.gridCount; x++) {
+                if (this.gridData[y][x] === null) {
+                    emptyCells.push({ x: x, y: y });
+                }
+            }
+        }
+
+        // シャッフル (Fisher-Yates)
+        for (var i = emptyCells.length - 1; i > 0; i--) {
+            var j = Math.floor(Math.random() * (i + 1));
+            var tmp = emptyCells[i];
+            emptyCells[i] = emptyCells[j];
+            emptyCells[j] = tmp;
+        }
+
+        var spawnNum = Math.min(count, emptyCells.length);
+        for (var k = 0; k < spawnNum; k++) {
+            var cell = emptyCells[k];
+            // 個別に 3〜5 ターンで消えるお邪魔猫を生成
+            var turns = 3 + Math.floor(Math.random() * 3);
+            var obstacle = ObstacleCat(turns).addChildTo(this.pieceLayer);
+            var pos = this.getCellLocalPos(cell.x, cell.y);
+            obstacle.setPosition(pos.x, pos.y);
+            obstacle.placedCell = { x: cell.x, y: cell.y };
+
+            this.gridData[cell.y][cell.x] = obstacle;
+
+            obstacle.setScale(0.2);
+            obstacle.tweener
+                .clear()
+                .to({ scaleX: 1.0, scaleY: 1.0 }, 220, 'easeOutBack')
+                .play();
+        }
+        return spawnNum;
+    },
+
+    // 盤面上の既存お邪魔猫の残りターンを進め、0になったら消滅させる
+    tickObstacleCats: function () {
+        var expired = [];
+        for (var y = 0; y < this.gridCount; y++) {
+            for (var x = 0; x < this.gridCount; x++) {
+                var cell = this.gridData[y][x];
+                if (cell && cell.isObstacle) {
+                    cell.remainingTurns--;
+                    if (cell.remainingTurns <= 0) {
+                        this.gridData[y][x] = null;
+                        expired.push(cell);
+                    } else {
+                        cell.updateTurnLabel();
+                    }
+                }
+            }
+        }
+
+        expired.forEach(function (obs) {
+            obs.tweener
+                .clear()
+                .to({ scaleX: 0.2, scaleY: 0.2, alpha: 0 }, 200, 'easeInQuad')
+                .call(function () {
+                    obs.destroyPiece();
+                })
+                .play();
         });
     },
 

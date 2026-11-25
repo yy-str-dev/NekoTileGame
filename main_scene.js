@@ -14,6 +14,9 @@ phina.define('MainScene', {
         // スコア管理
         this.scoreManager = ScoreManager().addChildTo(this);
 
+        // お題管理
+        this.missionManager = MissionManager().addChildTo(this);
+
         // ゲーム状態管理
         this.draggingPiece = null;
         this.currentDropCells = null;
@@ -23,9 +26,12 @@ phina.define('MainScene', {
         // 1. ヘッダーUI（タイトル・スコア）を描画
         this.createHeader();
 
-        // 2. 8x8 盤面（Board）を配置
+        // 2. 8x8 盤面（Board）を配置（左寄せにして右側にお題パネルを配置）
         this.board = Board().addChildTo(this)
-            .setPosition(GameConfig.SCREEN_WIDTH / 2, 215);
+            .setPosition(170, 215);
+
+        // 2.5 右側のお題パネルを描画
+        this.createMissionPanel();
 
         // 3. 下部3スロット台座を描画
         this.createSlots();
@@ -42,8 +48,9 @@ phina.define('MainScene', {
         // 7. ゲームオーバーモーダル用最前面レイヤー
         this.modalLayer = DisplayElement().addChildTo(this);
 
-        // 初期スコア表示を同期
+        // 初期スコア表示・お題表示を同期
         this.updateScoreDisplay();
+        this.updateMissionDisplay();
 
         // シーン全体のポインタイベント設定（ドラッグ＆ドロップ）
         this.setupDragEvents();
@@ -237,6 +244,125 @@ phina.define('MainScene', {
 
             this.slotBases.push(base);
         }
+    },
+
+    // 盤面右側のお題パネルを作成
+    createMissionPanel: function () {
+        var panelX = 415;
+        var panelY = 215;
+        var panelW = 148;
+        var panelH = 321;
+
+        this.missionPanel = RectangleShape({
+            width: panelW,
+            height: panelH,
+            fill: '#fff9eb',
+            stroke: GameConfig.COLORS.BOARD_STROKE,
+            strokeWidth: 3,
+            cornerRadius: 14,
+            shadow: 'rgba(0,0,0,0.08)',
+            shadowBlur: 6,
+        }).addChildTo(this)
+            .setPosition(panelX, panelY);
+
+        // お題ヘッダーバッジ
+        RectangleShape({
+            width: panelW - 20,
+            height: 32,
+            fill: '#ffd166',
+            stroke: '#e67700',
+            strokeWidth: 2,
+            cornerRadius: 8,
+        }).addChildTo(this.missionPanel)
+            .setPosition(0, -128);
+
+        Label({
+            text: '🎯 お題',
+            fontSize: 16,
+            fontWeight: 'bold',
+            fill: GameConfig.COLORS.TEXT_MAIN,
+        }).addChildTo(this.missionPanel)
+            .setPosition(0, -128);
+
+        // 達成数表示
+        this.missionClearedLabel = Label({
+            text: '達成数: 0',
+            fontSize: 12,
+            fontWeight: 'bold',
+            fill: GameConfig.COLORS.TEXT_SUB,
+        }).addChildTo(this.missionPanel)
+            .setPosition(0, -94);
+
+        // 区切り線
+        RectangleShape({
+            width: panelW - 24,
+            height: 2,
+            fill: '#ead4af',
+            stroke: null,
+        }).addChildTo(this.missionPanel)
+            .setPosition(0, -76);
+
+        // お題内容
+        this.missionTitleLabel = Label({
+            text: '',
+            fontSize: 16,
+            fontWeight: 'bold',
+            lineHeight: 1.4,
+            fill: GameConfig.COLORS.TEXT_MAIN,
+        }).addChildTo(this.missionPanel)
+            .setPosition(0, -24);
+
+        // 進捗表示
+        this.missionProgressLabel = Label({
+            text: '残り: 1',
+            fontSize: 14,
+            fontWeight: 'bold',
+            fill: '#2b8a3e',
+        }).addChildTo(this.missionPanel)
+            .setPosition(0, 34);
+
+        // 残りターン枠
+        RectangleShape({
+            width: panelW - 24,
+            height: 44,
+            fill: '#faeed4',
+            stroke: '#d8b982',
+            strokeWidth: 2,
+            cornerRadius: 10,
+        }).addChildTo(this.missionPanel)
+            .setPosition(0, 82);
+
+        this.missionTurnLabel = Label({
+            text: '⏳ 残り 5 ターン',
+            fontSize: 14,
+            fontWeight: 'bold',
+            fill: GameConfig.COLORS.TEXT_MAIN,
+        }).addChildTo(this.missionPanel)
+            .setPosition(0, 82);
+
+        // 失敗ペナルティ注記
+        Label({
+            text: '失敗でお邪魔猫出現',
+            fontSize: 10,
+            fill: GameConfig.COLORS.TEXT_SUB,
+        }).addChildTo(this.missionPanel)
+            .setPosition(0, 128);
+    },
+
+    // お題パネルの表示内容を最新化
+    updateMissionDisplay: function () {
+        var m = this.missionManager.currentMission;
+        if (!m) return;
+
+        this.missionClearedLabel.text = '達成数: ' + this.missionManager.clearedCount;
+        this.missionTitleLabel.text = m.title;
+
+        var remainingTarget = Math.max(0, m.target - this.missionManager.progress);
+        this.missionProgressLabel.text = 'あと ' + remainingTarget + ' ' + m.unit;
+
+        var turns = this.missionManager.remainingTurns;
+        this.missionTurnLabel.text = '⏳ 残り ' + turns + ' ターン';
+        this.missionTurnLabel.fill = (turns <= 1) ? '#e03131' : GameConfig.COLORS.TEXT_MAIN;
     },
 
     // スコア表示の更新とポンッと跳ねるアニメーション
@@ -433,6 +559,10 @@ phina.define('MainScene', {
         // 3. スロットの3体を新規補充
         this.pieceStock.replenishAll();
 
+        // 3.5 お題状態をリセット
+        this.missionManager.reset();
+        this.updateMissionDisplay();
+
         // 4. ゲームオーバーフラグ解除
         this.isGameOver = false;
 
@@ -509,6 +639,9 @@ phina.define('MainScene', {
                 self.draggingPiece = null;
                 self.currentDropCells = null;
 
+                // 2.5 既存のお邪魔猫の残りターンを進める
+                self.board.tickObstacleCats();
+
                 // 3. ★ ライン消去判定 ＆ かかっている猫全体消去！
                 self.isClearing = true;
                 self.board.checkAndClearLines(function (clearResult) {
@@ -529,6 +662,18 @@ phina.define('MainScene', {
                         }
                         self.showFloatingText(msg, self.board.x, self.board.y - 110, '#ff4757');
                     }
+
+                    // 3.5 ★ お題の進行・達成・失敗判定
+                    var missionResult = self.missionManager.onTurnEnd(clearResult);
+                    if (missionResult.status === 'cleared') {
+                        self.showFloatingText('🎯 お題達成!!', 415, 130, '#2b8a3e');
+                    } else if (missionResult.status === 'failed') {
+                        var spawned = self.board.spawnObstacleCats(missionResult.obstacleCount);
+                        if (spawned > 0) {
+                            self.showFloatingText('😾 お邪魔猫 ×' + spawned, self.board.x, self.board.y - 70, '#e03131');
+                        }
+                    }
+                    self.updateMissionDisplay();
 
                     // 4. ★ 配置・消去後に詰み判定（ゲームオーバーチェック）
                     self.checkGameOver();
