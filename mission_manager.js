@@ -25,12 +25,12 @@ const MISSION_DEFINITIONS = [
         unit: '同時'
     },
     {
-        id: 'clear_single_cat',
+        id: 'clear_i_cat',
         type: 'piece_id',
-        pieceId: '1_single',
+        pieceId: ['2_i_h', '2_i_v'],
         target: 1,
         turns: 5,
-        title: '丸まり猫を\n1匹消去する',
+        title: 'I字猫を\n1匹消去する',
         unit: '匹'
     },
     {
@@ -101,7 +101,7 @@ phina.define('MissionManager', {
             } else if (m.type === 'piece_id' && clearResult.clearedPieces) {
                 var matched = 0;
                 for (var i = 0; i < clearResult.clearedPieces.length; i++) {
-                    if (clearResult.clearedPieces[i].pieceId === m.pieceId) {
+                    if (m.pieceId.includes(clearResult.clearedPieces[i].pieceId)) {
                         matched++;
                     }
                 }
