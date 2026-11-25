@@ -403,8 +403,8 @@ phina.define('Board', {
         var spawnNum = Math.min(count, emptyCells.length);
         for (var k = 0; k < spawnNum; k++) {
             var cell = emptyCells[k];
-            // 個別に 3〜5 ターンで消えるお邪魔猫を生成
-            var turns = 3 + Math.floor(Math.random() * 3);
+            // 個別に 1〜3 ターンで消えるお邪魔猫を生成
+            var turns = 1 + Math.floor(Math.random() * 3);
             var obstacle = ObstacleCat(turns).addChildTo(this.pieceLayer);
             var pos = this.getCellLocalPos(cell.x, cell.y);
             obstacle.setPosition(pos.x, pos.y);

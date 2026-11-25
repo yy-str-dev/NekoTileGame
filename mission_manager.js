@@ -123,7 +123,24 @@ phina.define('MissionManager', {
         this.remainingTurns--;
         if (this.remainingTurns <= 0) {
             // 失敗：これまでクリアしたお題数に応じてお邪魔猫の数を決定
-            var obstacleCount = 1 + this.clearedCount;
+            var obstacleCount = 1;
+
+            if (this.clearedCount < 10) {
+                obstacleCount = 1;
+            }
+            else if (this.clearedCount < 20) {
+                obstacleCount = 2;
+            }
+            else if (this.clearedCount < 30) {
+                obstacleCount = 3;
+            }
+            else if (this.clearedCount < 40) {
+                obstacleCount = 4;
+            }
+            else {
+                obstacleCount = 5;
+            }
+
             this.nextMission();
             return {
                 status: 'failed',
