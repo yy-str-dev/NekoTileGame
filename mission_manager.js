@@ -104,7 +104,7 @@ const MISSION_DEFINITIONS = [
         "unit": "ライン同時",
         "id": "clear_2_lines_once",
         "target": 2,
-        "turns": 6,
+        "turns": 12,
         "level": 3,
         "title": "2ライン\n同時消去する"
     },
@@ -113,7 +113,7 @@ const MISSION_DEFINITIONS = [
         "unit": "ライン同時",
         "id": "clear_3_lines_once_lv4",
         "target": 3,
-        "turns": 12,
+        "turns": 15,
         "level": 4,
         "title": "3ライン\n同時消去する"
     },
@@ -122,7 +122,7 @@ const MISSION_DEFINITIONS = [
         "unit": "ライン同時",
         "id": "clear_3_lines_once_lv5",
         "target": 3,
-        "turns": 9,
+        "turns": 12,
         "level": 5,
         "title": "3ライン\n同時消去する"
     },

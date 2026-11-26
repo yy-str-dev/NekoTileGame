@@ -8,8 +8,8 @@ const PIECE_DEFINITIONS = [
         type: '1_SINGLE',
         pose: '丸まり猫',
         imageKey: 'neko_1', // 画像アセットのキー名
-        color: '#ff9233',
-        stroke: '#d96b00',
+        color: '#fcc419',
+        stroke: '#e67700',
         coords: [{ x: 0, y: 0 }]
     },
 
@@ -21,8 +21,8 @@ const PIECE_DEFINITIONS = [
         type: '2_I',
         pose: '横向き猫 (横)',
         imageKey: 'neko_2_i_h',
-        color: '#ff5964',
-        stroke: '#d9303e',
+        color: '#fcc419',
+        stroke: '#e67700',
         coords: [{ x: 0, y: 0 }, { x: 1, y: 0 }]
     },
     {
@@ -30,8 +30,8 @@ const PIECE_DEFINITIONS = [
         type: '2_I',
         pose: '横向き猫 (縦)',
         imageKey: 'neko_2_i_v',
-        color: '#ff5964',
-        stroke: '#d9303e',
+        color: '#fcc419',
+        stroke: '#e67700',
         coords: [{ x: 0, y: 0 }, { x: 0, y: 1 }]
     },
 
@@ -43,8 +43,8 @@ const PIECE_DEFINITIONS = [
         type: '3_I',
         pose: '伸び猫 (横)',
         imageKey: 'neko_3_i_h',
-        color: '#51cf66',
-        stroke: '#2b8a3e',
+        color: '#fcc419',
+        stroke: '#e67700',
         coords: [{ x: 0, y: 0 }, { x: 1, y: 0 }, { x: 2, y: 0 }]
     },
     {
@@ -52,8 +52,8 @@ const PIECE_DEFINITIONS = [
         type: '3_I',
         pose: '伸び猫 (縦)',
         imageKey: 'neko_3_i_v',
-        color: '#51cf66',
-        stroke: '#2b8a3e',
+        color: '#fcc419',
+        stroke: '#e67700',
         coords: [{ x: 0, y: 0 }, { x: 0, y: 1 }, { x: 0, y: 2 }]
     },
 
@@ -65,8 +65,8 @@ const PIECE_DEFINITIONS = [
         type: '3_L',
         pose: 'くの字猫 (右下)',
         imageKey: 'neko_3_l_0',
-        color: '#339af0',
-        stroke: '#1c7ed6',
+        color: '#fcc419',
+        stroke: '#e67700',
         coords: [{ x: 0, y: 0 }, { x: 0, y: 1 }, { x: 1, y: 1 }]
     },
     {
@@ -74,8 +74,8 @@ const PIECE_DEFINITIONS = [
         type: '3_L',
         pose: 'くの字猫 (左下)',
         imageKey: 'neko_3_l_1',
-        color: '#339af0',
-        stroke: '#1c7ed6',
+        color: '#fcc419',
+        stroke: '#e67700',
         coords: [{ x: 1, y: 0 }, { x: 1, y: 1 }, { x: 0, y: 1 }]
     },
     {
@@ -83,8 +83,8 @@ const PIECE_DEFINITIONS = [
         type: '3_L',
         pose: 'くの字猫 (左上)',
         imageKey: 'neko_3_l_2',
-        color: '#339af0',
-        stroke: '#1c7ed6',
+        color: '#fcc419',
+        stroke: '#e67700',
         coords: [{ x: 0, y: 0 }, { x: 1, y: 0 }, { x: 0, y: 1 }]
     },
     {
@@ -92,8 +92,8 @@ const PIECE_DEFINITIONS = [
         type: '3_L',
         pose: 'くの字猫 (右上)',
         imageKey: 'neko_3_l_3',
-        color: '#339af0',
-        stroke: '#1c7ed6',
+        color: '#fcc419',
+        stroke: '#e67700',
         coords: [{ x: 0, y: 0 }, { x: 1, y: 0 }, { x: 1, y: 1 }]
     },
 
@@ -105,8 +105,8 @@ const PIECE_DEFINITIONS = [
         type: '4_I',
         pose: '長〜い猫 (横)',
         imageKey: 'neko_4_i_h',
-        color: '#cc5de8',
-        stroke: '#ae3ec9',
+        color: '#fcc419',
+        stroke: '#e67700',
         coords: [{ x: 0, y: 0 }, { x: 1, y: 0 }, { x: 2, y: 0 }, { x: 3, y: 0 }]
     },
     {
@@ -114,8 +114,8 @@ const PIECE_DEFINITIONS = [
         type: '4_I',
         pose: '長〜い猫 (縦)',
         imageKey: 'neko_4_i_v',
-        color: '#cc5de8',
-        stroke: '#ae3ec9',
+        color: '#fcc419',
+        stroke: '#e67700',
         coords: [{ x: 0, y: 0 }, { x: 0, y: 1 }, { x: 0, y: 2 }, { x: 0, y: 3 }]
     },
 
@@ -128,8 +128,8 @@ const PIECE_DEFINITIONS = [
         type: '4_L',
         pose: '直角猫 (縦0)',
         imageKey: 'neko_4_l_v0',
-        color: '#20c997',
-        stroke: '#0ca678',
+        color: '#fcc419',
+        stroke: '#e67700',
         coords: [{ x: 0, y: 0 }, { x: 0, y: 1 }, { x: 0, y: 2 }, { x: 1, y: 2 }]
     },
     {
@@ -137,8 +137,8 @@ const PIECE_DEFINITIONS = [
         type: '4_L',
         pose: '直角猫 (縦1)',
         imageKey: 'neko_4_l_v1',
-        color: '#20c997',
-        stroke: '#0ca678',
+        color: '#fcc419',
+        stroke: '#e67700',
         coords: [{ x: 1, y: 0 }, { x: 1, y: 1 }, { x: 1, y: 2 }, { x: 0, y: 2 }]
     },
     {
@@ -146,8 +146,8 @@ const PIECE_DEFINITIONS = [
         type: '4_L',
         pose: '直角猫 (縦2)',
         imageKey: 'neko_4_l_v2',
-        color: '#20c997',
-        stroke: '#0ca678',
+        color: '#fcc419',
+        stroke: '#e67700',
         coords: [{ x: 0, y: 0 }, { x: 1, y: 0 }, { x: 0, y: 1 }, { x: 0, y: 2 }]
     },
     {
@@ -155,8 +155,8 @@ const PIECE_DEFINITIONS = [
         type: '4_L',
         pose: '直角猫 (縦3)',
         imageKey: 'neko_4_l_v3',
-        color: '#20c997',
-        stroke: '#0ca678',
+        color: '#fcc419',
+        stroke: '#e67700',
         coords: [{ x: 0, y: 0 }, { x: 1, y: 0 }, { x: 1, y: 1 }, { x: 1, y: 2 }]
     },
     // --- 横長 2x3 ---
@@ -165,8 +165,8 @@ const PIECE_DEFINITIONS = [
         type: '4_L',
         pose: '直角猫 (横0)',
         imageKey: 'neko_4_l_h0',
-        color: '#20c997',
-        stroke: '#0ca678',
+        color: '#fcc419',
+        stroke: '#e67700',
         coords: [{ x: 0, y: 0 }, { x: 0, y: 1 }, { x: 1, y: 1 }, { x: 2, y: 1 }]
     },
     {
@@ -174,8 +174,8 @@ const PIECE_DEFINITIONS = [
         type: '4_L',
         pose: '直角猫 (横1)',
         imageKey: 'neko_4_l_h1',
-        color: '#20c997',
-        stroke: '#0ca678',
+        color: '#fcc419',
+        stroke: '#e67700',
         coords: [{ x: 0, y: 0 }, { x: 1, y: 0 }, { x: 2, y: 0 }, { x: 0, y: 1 }]
     },
     {
@@ -183,8 +183,8 @@ const PIECE_DEFINITIONS = [
         type: '4_L',
         pose: '直角猫 (横2)',
         imageKey: 'neko_4_l_h2',
-        color: '#20c997',
-        stroke: '#0ca678',
+        color: '#fcc419',
+        stroke: '#e67700',
         coords: [{ x: 0, y: 0 }, { x: 1, y: 0 }, { x: 2, y: 0 }, { x: 2, y: 1 }]
     },
     {
@@ -192,8 +192,8 @@ const PIECE_DEFINITIONS = [
         type: '4_L',
         pose: '直角猫 (横3)',
         imageKey: 'neko_4_l_h3',
-        color: '#20c997',
-        stroke: '#0ca678',
+        color: '#fcc419',
+        stroke: '#e67700',
         coords: [{ x: 2, y: 0 }, { x: 0, y: 1 }, { x: 1, y: 1 }, { x: 2, y: 1 }]
     },
 
