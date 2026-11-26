@@ -57,6 +57,7 @@ var click_handler = function () {
             width: GameConfig.SCREEN_WIDTH,
             height: GameConfig.SCREEN_HEIGHT,
             fps: 60,
+            fit: true,
             assets: ASSETS,
         });
         // アプリケーション実行
