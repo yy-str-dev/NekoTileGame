@@ -760,8 +760,8 @@ phina.define('MainScene', {
         piece.addChildTo(this.dragLayer);
 
         // 指の少し上に移動しつつ、等倍 (1.0) に拡大
-        var offset = GameConfig.IS_MOBILE ? -100 : 50;
-        var startY = event.pointer.y - 50;
+        var offset = GameConfig.IS_MOBILE ? -100 : -50;
+        var startY = event.pointer.y - offset;
         piece.setPosition(event.pointer.x, startY);
 
         piece.tweener
