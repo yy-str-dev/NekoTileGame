@@ -312,6 +312,10 @@ phina.define('MainScene', {
         }).addChildTo(this.missionPanel)
             .setPosition(0, -24);
 
+        // 猫お題アイコン用コンテナ
+        this.missionIconContainer = DisplayElement().addChildTo(this.missionPanel)
+            .setPosition(0, -2);
+
         // 進捗表示
         this.missionProgressLabel = Label({
             text: '残り: 1',
@@ -356,6 +360,50 @@ phina.define('MainScene', {
 
         this.missionClearedLabel.text = '達成数: ' + this.missionManager.clearedCount;
         this.missionTitleLabel.text = m.title;
+
+        // アイコンコンテナをクリア
+        if (this.missionIconContainer) {
+            this.missionIconContainer.children.slice().forEach(function (child) {
+                if (child.destroyPiece) child.destroyPiece();
+                else child.remove();
+            });
+        }
+
+        var hasIcon = false;
+        if (m.pieceIds && m.pieceIds.length > 0) {
+            var targetId = m.pieceIds[0];
+            var shapeDef = null;
+            for (var i = 0; i < PIECE_DEFINITIONS.length; i++) {
+                if (PIECE_DEFINITIONS[i].id === targetId) {
+                    shapeDef = PIECE_DEFINITIONS[i];
+                    break;
+                }
+            }
+            if (shapeDef) {
+                var preview = Piece(shapeDef, shapeDef.coords).addChildTo(this.missionIconContainer);
+                preview.setInteractive(false);
+                var scale = Math.min(84 / preview.width, 44 / preview.height, 0.75);
+                preview.setScale(scale);
+                hasIcon = true;
+            }
+        } else if (m.type === 'cats') {
+            Label({
+                text: '🐱',
+                fontSize: 28,
+            }).addChildTo(this.missionIconContainer);
+            hasIcon = true;
+        }
+
+        // アイコン有無に応じてタイトル・進捗の位置を調整
+        if (hasIcon) {
+            this.missionTitleLabel.fontSize = 14;
+            this.missionTitleLabel.setPosition(0, -50);
+            this.missionProgressLabel.setPosition(0, 38);
+        } else {
+            this.missionTitleLabel.fontSize = 16;
+            this.missionTitleLabel.setPosition(0, -24);
+            this.missionProgressLabel.setPosition(0, 34);
+        }
 
         var remainingTarget = Math.max(0, m.target - this.missionManager.progress);
         this.missionProgressLabel.text = 'あと ' + remainingTarget + ' ' + m.unit;

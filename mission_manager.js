@@ -134,7 +134,7 @@ const MISSION_DEFINITIONS = [
         "turns": 6,
         "level": 1,
         "title": "お座り猫を\n1匹消去する",
-        "pieceIds": ["2_i_h", "2_i_v"]
+        "pieceIds": ["2_i_v", "2_i_h"]
     },
     {
         "type": "piece_id",
@@ -144,7 +144,7 @@ const MISSION_DEFINITIONS = [
         "turns": 6,
         "level": 2,
         "title": "お座り猫を\n2匹消去する",
-        "pieceIds": ["2_i_h", "2_i_v"]
+        "pieceIds": ["2_i_v", "2_i_h"]
     },
     {
         "type": "piece_id",
@@ -154,7 +154,7 @@ const MISSION_DEFINITIONS = [
         "turns": 6,
         "level": 2,
         "title": "くの字猫を\n1匹消去する",
-        "pieceIds": ["3_l_0", "3_l_1", "3_l_2", "3_l_3"]
+        "pieceIds": ["3_l_3", "3_l_1", "3_l_2", "3_l_0"]
     },
     {
         "type": "piece_id",
@@ -164,7 +164,7 @@ const MISSION_DEFINITIONS = [
         "turns": 6,
         "level": 3,
         "title": "くの字猫を\n2匹消去する",
-        "pieceIds": ["3_l_0", "3_l_1", "3_l_2", "3_l_3"]
+        "pieceIds": ["3_l_3", "3_l_1", "3_l_2", "3_l_0"]
     },
     {
         "type": "piece_id",
@@ -184,7 +184,7 @@ const MISSION_DEFINITIONS = [
         "turns": 6,
         "level": 4,
         "title": "尻上がり猫を\n1匹消去する",
-        "pieceIds": ["4_l_v1", "4_l_v2", "4_l_h0", "4_l_h2"]
+        "pieceIds": ["4_l_h0", "4_l_v1", "4_l_v2", "4_l_h2"]
     },
     {
         "type": "piece_id",
@@ -194,7 +194,7 @@ const MISSION_DEFINITIONS = [
         "target": 1,
         "level": 4,
         "title": "シャム猫を\n1匹消去する",
-        "pieceIds": ["4_l_v0", "4_l_v3", "4_l_h1", "4_l_h3"]
+        "pieceIds": ["4_l_h3", "4_l_v0", "4_l_v3", "4_l_h1"]
     },
     {
         "type": "piece_id",
@@ -234,7 +234,7 @@ const MISSION_DEFINITIONS = [
         "turns": 6,
         "level": 4,
         "title": "長～い猫を\n1匹消去する",
-        "pieceIds": ["4_i_h", "4_i_v"]
+        "pieceIds": ["4_i_v", "4_i_h"]
     },
     {
         "type": "piece_id",
@@ -244,7 +244,7 @@ const MISSION_DEFINITIONS = [
         "turns": 6,
         "level": 5,
         "title": "尻上がり猫を\n2匹消去する",
-        "pieceIds": ["4_l_v1", "4_l_v2", "4_l_h0", "4_l_h2"]
+        "pieceIds": ["4_l_h0", "4_l_v1", "4_l_v2", "4_l_h2"]
     },
     {
         "type": "piece_id",
@@ -254,7 +254,7 @@ const MISSION_DEFINITIONS = [
         "target": 2,
         "level": 5,
         "title": "シャム猫を\n1匹消去する",
-        "pieceIds": ["4_l_v0", "4_l_v3", "4_l_h1", "4_l_h3"]
+        "pieceIds": ["4_l_h3", "4_l_v0", "4_l_v3", "4_l_h1"]
     },
     {
         "type": "piece_id",
@@ -294,7 +294,7 @@ const MISSION_DEFINITIONS = [
         "turns": 6,
         "level": 5,
         "title": "長～い猫を\n2匹消去する",
-        "pieceIds": ["4_i_h", "4_i_v"]
+        "pieceIds": ["4_i_v", "4_i_h"]
     },
     {
         "type": "piece_id",
