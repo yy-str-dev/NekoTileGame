@@ -33,6 +33,7 @@ const ASSETS = {
         "neko_4_totsu_3": "image/neko_4_totsu_3.png",
         "neko_4_totsu_4": "image/neko_4_totsu_4.png",
         "neko_4_sq": "image/neko_4_sq.png",
+        "block": "image/block.png",
     },
 };
 

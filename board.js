@@ -11,24 +11,11 @@ phina.define('ObstacleCat', {
 
         var size = GameConfig.CELL_SIZE;
 
-        // お邪魔猫の本体ブロック
-        RectangleShape({
-            width: size,
-            height: size,
-            fill: '#6c757d',
-            stroke: '#495057',
-            strokeWidth: 2,
-            cornerRadius: 8,
-            shadow: 'rgba(0,0,0,0.18)',
-            shadowBlur: 4,
-        }).addChildTo(this);
-
-        // お邪魔猫アイコン
-        Label({
-            text: '😾',
-            fontSize: 16,
-        }).addChildTo(this)
-            .setPosition(0, -3);
+        // // お邪魔本体ブロック
+        var sprite = Sprite("block").addChildTo(this);
+        sprite.width = size;
+        sprite.height = size;
+        sprite.setPosition(0, 0);
 
         // 残りターン数バッジ
         this.turnLabel = Label({
