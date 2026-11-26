@@ -41,12 +41,12 @@ const SOUNDS = {
 };
 
 var click_handler = function () {
-    var frontPage = document.getElementById("front_page");
-    if (frontPage) {
-        frontPage.remove();
+    var container = document.getElementById("container");
+    if (container) {
+        container.remove();
     }
 
-    document.getElementById("canvas").style = "display: block;";
+    document.getElementById("canvas").style.display = "block";
 
     // メイン処理
     phina.main(function () {
