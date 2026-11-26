@@ -630,8 +630,9 @@ phina.define('MainScene', {
             if (!self.draggingPiece || self.isGameOver) return;
 
             var piece = self.draggingPiece;
-            // 指やカーソルでブロックが隠れないように、少し上（Y: -50px）にオフセット
-            piece.setPosition(e.pointer.x, e.pointer.y - 50);
+            // 指やカーソルでブロックが隠れないように、少し上にオフセット
+            var offset = GameConfig.IS_MOBILE ? 100 : 50;
+            piece.setPosition(e.pointer.x, e.pointer.y - offset);
 
             // ★ 基準ブロック (coords[0]) から基準グリッドインデックスを算出
             var pitch = self.board.pitch;
@@ -760,7 +761,7 @@ phina.define('MainScene', {
         piece.addChildTo(this.dragLayer);
 
         // 指の少し上に移動しつつ、等倍 (1.0) に拡大
-        var offset = GameConfig.IS_MOBILE ? -100 : -50;
+        var offset = GameConfig.IS_MOBILE ? 100 : 50;
         var startY = event.pointer.y - offset;
         piece.setPosition(event.pointer.x, startY);
 
