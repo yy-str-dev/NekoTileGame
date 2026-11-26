@@ -346,7 +346,7 @@ phina.define('MainScene', {
 
         // 失敗ペナルティ注記
         Label({
-            text: '失敗でお邪魔猫出現',
+            text: '失敗でお邪魔ブロック出現',
             fontSize: 10,
             fill: GameConfig.COLORS.TEXT_SUB,
         }).addChildTo(this.missionPanel)
@@ -704,7 +704,7 @@ phina.define('MainScene', {
                         self.updateScoreDisplay(true);
 
                         // 爽快ポップアップ表示
-                        var msg = '✨成仏!! +' + clearPoints;
+                        var msg = '✨クリア!! +' + clearPoints;
                         if (clearResult.lineCount >= 2) {
                             msg += ' (' + clearResult.lineCount + '列同時!)';
                         }
@@ -718,7 +718,7 @@ phina.define('MainScene', {
                     } else if (missionResult.status === 'failed') {
                         var spawned = self.board.spawnObstacleCats(missionResult.obstacleCount);
                         if (spawned > 0) {
-                            self.showFloatingText('😾 お邪魔猫 ×' + spawned, self.board.x, self.board.y - 70, '#e03131');
+                            self.showFloatingText('🚫お邪魔ブロック ×' + spawned, self.board.x, self.board.y - 70, '#e03131');
                         }
                     }
                     self.updateMissionDisplay();

@@ -504,12 +504,14 @@ phina.define('Board', {
     // 猫たちの昇天・成仏アニメーション（確実に盤面から消滅させる）
     playCatsAscendAnimation: function (pieces, callback) {
         var self = this;
+        var meowList = ["にゃー", "にゃーん", "ニャー", "ニャーン", "にゃあ", "にゃあにゃあ"];
 
         // 各猫についてエフェクトレイヤーで昇天演出し、元の猫は確実に削除
         pieces.forEach(function (piece) {
-            // 成仏ラベル
+            var meow = meowList[Math.floor(Math.random() * meowList.length)];
+            // 鳴き声ラベル
             var spark = Label({
-                text: '✨成仏✨',
+                text: `✨${meow}✨`,
                 fontSize: 18,
                 fontWeight: 'bold',
                 fill: '#ff4757',
