@@ -759,7 +759,8 @@ phina.define('MainScene', {
         // 最前面レイヤーに移動
         piece.addChildTo(this.dragLayer);
 
-        // 指の少し上（Y: -50px）に移動しつつ、等倍 (1.0) に拡大
+        // 指の少し上に移動しつつ、等倍 (1.0) に拡大
+        var offset = GameConfig.IS_MOBILE ? -100 : 50;
         var startY = event.pointer.y - 50;
         piece.setPosition(event.pointer.x, startY);
 

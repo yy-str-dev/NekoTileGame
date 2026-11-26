@@ -1,7 +1,14 @@
 GameConfig = {
     SCREEN_WIDTH: 500,
     SCREEN_HEIGHT: 500,
-    
+
+    // スマートフォン（タッチデバイス）判定
+    IS_MOBILE: (
+        ('ontouchstart' in window && navigator.maxTouchPoints > 0) ||
+        (window.matchMedia && window.matchMedia('(pointer: coarse)').matches) ||
+        /iPhone|iPad|iPod|Android/i.test(navigator.userAgent)
+    ),
+
     // 盤面設定
     GRID_COUNT: 8,
     CELL_SIZE: 35,
