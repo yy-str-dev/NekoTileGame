@@ -14,8 +14,8 @@ const ASSETS = {
         "neko_3_l_2": "image/neko_3_l_2.png",
         "neko_3_l_3": "image/neko_3_l_3.png",
         // 4ブロック
-        // "neko_4_i_h": "image/neko_4_i_h.png",
-        // "neko_4_i_v": "image/neko_4_i_v.png",
+        "neko_4_i_h": "image/neko_4_i_h.png",
+        "neko_4_i_v": "image/neko_4_i_v.png",
         "neko_4_l_v0": "image/neko_4_l_v0.png",
         "neko_4_l_v1": "image/neko_4_l_v1.png",
         "neko_4_l_v2": "image/neko_4_l_v2.png",
@@ -24,6 +24,8 @@ const ASSETS = {
         "neko_4_l_h1": "image/neko_4_l_h1.png",
         "neko_4_l_h2": "image/neko_4_l_h2.png",
         "neko_4_l_h3": "image/neko_4_l_h3.png",
+        "neko_4_s_v": "image/neko_4_s_v.png",
+        "neko_4_s_h": "image/neko_4_s_h.png",
         "neko_4_z_v": "image/neko_4_z_v.png",
         "neko_4_z_h": "image/neko_4_z_h.png",
         "neko_4_totsu_1": "image/neko_4_totsu_1.png",
@@ -31,7 +33,6 @@ const ASSETS = {
         "neko_4_totsu_3": "image/neko_4_totsu_3.png",
         "neko_4_totsu_4": "image/neko_4_totsu_4.png",
         "neko_4_sq": "image/neko_4_sq.png",
-        // ...
     },
 };
 

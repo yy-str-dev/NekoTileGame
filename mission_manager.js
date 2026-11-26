@@ -5,7 +5,7 @@ const MISSION_DEFINITIONS = [
         "unit": "ライン",
         "id": "clear_line_tutorial",
         "target": 5,
-        "turns": 30,
+        "turns": 999,
         "level": 0,
         "title": "5ライン\n消去する"
     },
