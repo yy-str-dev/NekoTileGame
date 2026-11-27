@@ -280,3 +280,32 @@ flowchart TD
    - 手持ち3体の全マス走査による詰み判定
    - リザルト・リトライ機能
    - ポーズごとの画像/グラフィックの適用
+
+## 7. サウンド仕様
+
+### 7.1. SE一覧
+| ID | ファイル名 | 再生タイミング |
+|:-|:-|:-|
+| SE-neko_spawn | neko_spawn.mp3 | 手札スロット補充時 |
+| SE-neko_pick | neko_pick.mp3 | 手札猫をつかんだ時 |
+| SE-neko_put_fail | neko_put_fail.mp3 | 手札猫配置失敗時 |
+| SE-neko_put_success | neko_put_success.mp3 | 手札猫配置成功時 |
+| SE-line_clear | line_clear.mp3 | ライン消去時(1ライン) |
+| SE-line_clear_multiple | line_clear_multiple.mp3 | ライン消去時(2ライン以上) |
+| SE-line_clear_neko1 | line_clear_neko1.mp3 | ライン消去時猫の鳴き声 |
+| SE-line_clear_neko2 | line_clear_neko2.mp3 | ライン消去時猫の鳴き声 |
+| SE-line_clear_neko3 | line_clear_neko3.mp3 | ライン消去時猫の鳴き声 |
+| SE-line_clear_neko4 | line_clear_neko4.mp3 | ライン消去時猫の鳴き声 |
+| SE-line_clear_neko5 | line_clear_neko5.mp3 | ライン消去時猫の鳴き声 |
+| SE-block_put | block_put.mp3 | お邪魔ブロック配置時 |
+| SE-block_clear | block_clear.mp3 | お邪魔ブロック消去時 |
+| SE-mission_clear | mission_clear.mp3 | お題成功時 |
+| SE-mission_fail | mission_fail.mp3 | お題失敗時 |
+| SE-game_over | gameover.mp3 | ゲームオーバー時 |
+| SE-ok_button | ok_button.mp3 | リトライボタン押下時 |
+
+### 7.2. BGM一覧
+| ID | ファイル名 | 再生タイミング |
+|:-|:-|:-|
+| BGM-game | game.wav | パズル中 |
+| BGM-gameover | gameover.mp3 | リザルト |

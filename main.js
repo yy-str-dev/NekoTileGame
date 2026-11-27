@@ -38,6 +38,22 @@ const ASSETS = {
 };
 
 const SOUNDS = {
+    // SE
+    "SE-neko_spawn": "se/neko_spawn.mp3",
+    "SE-neko_pick": "se/neko_pick.mp3",
+    "SE-neko_put_fail": "se/neko_put_fail.mp3",
+    "SE-neko_put_success": "se/neko_put_success.mp3",
+    "SE-line_clear": "se/line_clear.mp3",
+    "SE-line_clear_multiple": "se/line_clear_multiple.mp3",
+    "SE-line_clear_neko1": "se/line_clear_neko1.mp3",
+    "SE-line_clear_neko2": "se/line_clear_neko2.mp3",
+    "SE-line_clear_neko3": "se/line_clear_neko3.mp3",
+    "SE-line_clear_neko4": "se/line_clear_neko4.mp3",
+    "SE-line_clear_neko5": "se/line_clear_neko5.mp3",
+    "SE-mission_clear": "se/mission_clear.mp3",
+    "SE-mission_fail": "se/mission_fail.mp3",
+    // BGM
+    "BGM-game": "bgm/game.mp3"
 };
 
 var click_handler = function () {
@@ -47,6 +63,8 @@ var click_handler = function () {
     }
 
     document.getElementById("canvas").style.display = "block";
+
+    MySoundManager.loadAssets(SOUNDS);
 
     // メイン処理
     phina.main(function () {

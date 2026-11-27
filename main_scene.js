@@ -38,6 +38,7 @@ phina.define('MainScene', {
 
         // 4. 猫ピースの手札管理 (PieceStock) を生成し、3枠に猫を補充
         this.pieceStock = PieceStock().addChildTo(this);
+        MySoundManager.playSE("SE-neko_spawn");
 
         // 5. ドラッグ中の最前面レイヤー
         this.dragLayer = DisplayElement().addChildTo(this);
@@ -60,6 +61,8 @@ phina.define('MainScene', {
         this.board.one('enterframe', function () {
             self.checkGameOver();
         });
+
+        MySoundManager.playBGM("BGM-game");
     },
 
     // ヘッダーUIの作成
@@ -606,6 +609,7 @@ phina.define('MainScene', {
 
         // 3. スロットの3体を新規補充
         this.pieceStock.replenishAll();
+        MySoundManager.playSE("SE-neko_spawn");
 
         // 3.5 お題状態をリセット
         this.missionManager.reset();
@@ -683,6 +687,7 @@ phina.define('MainScene', {
 
                 if (self.pieceStock.isEmpty()) {
                     self.pieceStock.replenishAll(slotIndex);
+                    MySoundManager.playSE("SE-neko_spawn");
                 }
 
                 self.draggingPiece = null;
@@ -710,23 +715,34 @@ phina.define('MainScene', {
                             msg += ' (' + clearResult.lineCount + '列同時!)';
                         }
                         self.showFloatingText(msg, self.board.x, self.board.y - 110, '#ff4757');
+
+                        if (clearResult.lineCount >= 2) {
+                            MySoundManager.playSE("SE-line_clear_multiple");
+                        }
+                        else {
+                            MySoundManager.playSE("SE-line_clear");
+                        }
                     }
 
                     // 3.5 ★ お題の進行・達成・失敗判定
                     var missionResult = self.missionManager.onTurnEnd(clearResult);
                     if (missionResult.status === 'cleared') {
                         self.showFloatingText('🎯 お題達成!!', 415, 130, '#2b8a3e');
+                        MySoundManager.playSE("SE-mission_clear");
                     } else if (missionResult.status === 'failed') {
                         var spawned = self.board.spawnObstacleCats(missionResult.obstacleCount);
                         if (spawned > 0) {
                             self.showFloatingText('🚫お邪魔ブロック ×' + spawned, self.board.x, self.board.y - 70, '#e03131');
                         }
+                        MySoundManager.playSE("SE-mission_fail");
                     }
                     self.updateMissionDisplay();
 
                     // 4. ★ 配置・消去後に詰み判定（ゲームオーバーチェック）
                     self.checkGameOver();
                 });
+
+                MySoundManager.playSE("SE-neko_put_success");
             } else {
                 // 配置失敗（スロットの位置へ戻す）
                 self.board.clearGuide();
@@ -746,6 +762,8 @@ phina.define('MainScene', {
 
                 self.draggingPiece = null;
                 self.currentDropCells = null;
+
+                MySoundManager.playSE("SE-neko_put_fail");
             }
         });
     },
@@ -769,6 +787,8 @@ phina.define('MainScene', {
             .clear()
             .to({ scaleX: 1.0, scaleY: 1.0 }, 100, 'easeOutQuad')
             .play();
+
+        MySoundManager.playSE("SE-neko_pick");
     },
 
     update: function () {

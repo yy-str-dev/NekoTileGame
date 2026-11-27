@@ -543,6 +543,12 @@ phina.define('Board', {
                     else piece.remove();
                 })
                 .play();
+
+            var sounds = ["SE-line_clear_neko1", "SE-line_clear_neko2", "SE-line_clear_neko3", "SE-line_clear_neko4", "SE-line_clear_neko5"];
+
+            setTimeout(() => {
+                MySoundManager.playSE(sounds[Math.floor(Math.random() * sounds.length)]);
+            }, Math.random() * 100);
         });
 
         // アニメーション完了後に確実にクリーンアップ
