@@ -113,53 +113,6 @@ phina.define('MainScene', {
             fill: GameConfig.COLORS.TEXT_MAIN,
         }).addChildTo(headerGroup)
             .setPosition(370, 38);
-
-        // デバッグ用: 成仏テストボタン
-        var testBtn = RectangleShape({
-            width: 38,
-            height: 22,
-            fill: '#ffd166',
-            stroke: '#e67700',
-            strokeWidth: 1,
-            cornerRadius: 4,
-        }).addChildTo(headerGroup)
-            .setPosition(432, 28);
-
-        Label({
-            text: '消去',
-            fontSize: 10,
-            fontWeight: 'bold',
-            fill: '#5c4838',
-        }).addChildTo(testBtn);
-
-        testBtn.setInteractive(true);
-        var self = this;
-        testBtn.on('pointstart', function () {
-            self.debugFillAndClearRow();
-        });
-
-        // デバッグ用: 詰みテストボタン
-        var overBtn = RectangleShape({
-            width: 38,
-            height: 22,
-            fill: '#ff8787',
-            stroke: '#e03131',
-            strokeWidth: 1,
-            cornerRadius: 4,
-        }).addChildTo(headerGroup)
-            .setPosition(476, 28);
-
-        Label({
-            text: '詰み',
-            fontSize: 10,
-            fontWeight: 'bold',
-            fill: '#ffffff',
-        }).addChildTo(overBtn);
-
-        overBtn.setInteractive(true);
-        overBtn.on('pointstart', function () {
-            self.debugTriggerDeadlock();
-        });
     },
 
     // デバッグ用: 最下行を1列埋めて即座に成仏をテスト

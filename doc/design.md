@@ -307,5 +307,5 @@ flowchart TD
 ### 7.2. BGM一覧
 | ID | ファイル名 | 再生タイミング |
 |:-|:-|:-|
-| BGM-game | game.wav | パズル中 |
+| BGM-game | game.mp3 | パズル中 |
 | BGM-gameover | gameover.mp3 | リザルト |
