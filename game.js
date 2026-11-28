@@ -46,7 +46,18 @@ class _SoundManager {
     }
 
     stopBGM() {
+        if (this.current_bgm == null) {
+            return;
+        }
+
+        this.current_bgm.currentTime = 0;
         this.current_bgm.pause();
+        this.current_bgm = null;
+    }
+
+    playBGMFromHead(asset_name) {
+        this.stopBGM();
+        this.playBGM(asset_name);
     }
 
     playSE(asset_name) {

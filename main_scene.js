@@ -438,6 +438,7 @@ phina.define('MainScene', {
             self.showGameOverModal();
 
             MySoundManager.playSE("SE-gameover");
+            MySoundManager.stopBGM();
         }, 500);
     },
 
@@ -550,6 +551,7 @@ phina.define('MainScene', {
             modal.remove();
             self.restartGame();
             MySoundManager.playSE("SE-ok_button");
+            MySoundManager.playBGMFromHead("BGM-game");
         });
     },
 
