@@ -54,6 +54,8 @@ const SOUNDS = {
     "SE-block_clear": "se/block_clear.mp3",
     "SE-mission_clear": "se/mission_clear.mp3",
     "SE-mission_fail": "se/mission_fail.mp3",
+    "SE-gameover": "se/gameover.mp3",
+    "SE-ok_button": "se/ok_button.mp3",
     // BGM
     "BGM-game": "bgm/game.mp3"
 };

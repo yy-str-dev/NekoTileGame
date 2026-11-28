@@ -436,6 +436,8 @@ phina.define('MainScene', {
         // すこし余韻を持たせてからモーダルをポップアップ表示
         setTimeout(function () {
             self.showGameOverModal();
+
+            MySoundManager.playSE("SE-gameover");
         }, 500);
     },
 
@@ -547,6 +549,7 @@ phina.define('MainScene', {
         retryBtn.on('pointstart', function () {
             modal.remove();
             self.restartGame();
+            MySoundManager.playSE("SE-ok_button");
         });
     },
 

@@ -17,8 +17,11 @@
 | line_clear_neko3.mp3 | 効果音ラボ | https://soundeffect-lab.info/sound/animal/
 | line_clear_neko4.mp3 | pixaboy | https://pixabay.com/ja/sound-effects/search/%E7%8C%AB%E3%81%AE%E9%B3%B4%E3%81%8D%E5%A3%B0/
 | line_clear_neko5.mp3 | pocketsound ||https://pocket-se.info/archives/tag/%E7%8C%AB/page/3/
+| block_put.mp3 | こんとどぅふぇ | https://conte-de-fees.com/se/style/cute |
+| block_clear.mp3 | こんとどぅふぇ | https://conte-de-fees.com/se/style/cute |
 | mission_clear.mp3 | こんとどぅふぇ | https://conte-de-fees.com/se/style/cute |
 | mission_fail.mp3 | こんとどぅふぇ | https://conte-de-fees.com/se/style/cute |
+| gameover.mp3 | こんとどぅふぇ | https://conte-de-fees.com/se/style/cute |
 
 ### BGM
 
