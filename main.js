@@ -50,6 +50,8 @@ const SOUNDS = {
     "SE-line_clear_neko3": "se/line_clear_neko3.mp3",
     "SE-line_clear_neko4": "se/line_clear_neko4.mp3",
     "SE-line_clear_neko5": "se/line_clear_neko5.mp3",
+    "SE-block_put": "se/block_put.mp3",
+    "SE-block_clear": "se/block_clear.mp3",
     "SE-mission_clear": "se/mission_clear.mp3",
     "SE-mission_fail": "se/mission_fail.mp3",
     // BGM

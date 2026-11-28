@@ -686,6 +686,11 @@ phina.define('MainScene', {
                         var spawned = self.board.spawnObstacleCats(missionResult.obstacleCount);
                         if (spawned > 0) {
                             self.showFloatingText('🚫お邪魔ブロック ×' + spawned, self.board.x, self.board.y - 70, '#e03131');
+                            for (var i = 0; i < spawned; i++) {
+                                setTimeout(() => {
+                                    MySoundManager.playSE("SE-block_put");
+                                }, i * 100);
+                            }
                         }
                         MySoundManager.playSE("SE-mission_fail");
                     }

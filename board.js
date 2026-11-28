@@ -426,6 +426,7 @@ phina.define('Board', {
             }
         }
 
+        var i = 0;
         expired.forEach(function (obs) {
             obs.tweener
                 .clear()
@@ -434,6 +435,11 @@ phina.define('Board', {
                     obs.destroyPiece();
                 })
                 .play();
+
+            setTimeout(() => {
+                MySoundManager.playSE("SE-block_clear");
+            }, 100 * i);
+            i++;
         });
     },
 
